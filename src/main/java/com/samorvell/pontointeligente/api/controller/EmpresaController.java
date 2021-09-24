@@ -17,7 +17,7 @@ import com.samorvell.pontointeligente.api.repository.EmpresaRepository;
 @RequestMapping("/api/empresa")
 @CrossOrigin(origins = "*")
 public class EmpresaController {
-	
+
 	private final EmpresaRepository empresaRepository;
 
 	public EmpresaController(EmpresaRepository empresaRepository) {
