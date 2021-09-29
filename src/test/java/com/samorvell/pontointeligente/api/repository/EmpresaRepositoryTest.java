@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,11 +17,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.samorvell.pontointeligente.api.model.Empresa;
 
-
+@TestMethodOrder(MethodOrderer.Alphanumeric.class)
+@TestInstance(Lifecycle.PER_CLASS)
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public interface EmpresaRepositoryTest {
+public class EmpresaRepositoryTest {
 	@Autowired
 	private EmpresaRepository empresaRepository;
 	
@@ -39,7 +42,7 @@ public interface EmpresaRepositoryTest {
 	}
 
 	@Test
-	public void testBuscarPorCnpj() {
+	public void tesAtBuscarPorCnpj() {
 		Empresa empresa = this.empresaRepository.findByCnpj(CNPJ);
 		
 		assertEquals(CNPJ, empresa.getCnpj());
