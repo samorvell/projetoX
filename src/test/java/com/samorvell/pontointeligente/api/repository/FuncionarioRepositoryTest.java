@@ -33,11 +33,11 @@ public class FuncionarioRepositoryTest {
 	private static final String EMAIL = "email@email.com";
 	private static final String CPF = "24291173474";
 
-//	@Before
-//	public void setUp() throws Exception {
-//		Empresa empresa = this.empresaRepository.save(obterDadosEmpresa());
-//		this.funcionarioRepository.save(obterDadosFuncionario(empresa));
-//	}
+	@Before
+	public void setUp() throws Exception {
+		Empresa empresa = this.empresaRepository.save(obterDadosEmpresa());
+		this.funcionarioRepository.save(obterDadosFuncionario(empresa));
+	}
 
 	@After
 	public final void tearDown() {
@@ -79,16 +79,16 @@ public class FuncionarioRepositoryTest {
 		assertNotNull(funcionario);
 	}
 
-//	private Funcionario obterDadosFuncionario(Empresa empresa) throws NoSuchAlgorithmException {
-//		Funcionario funcionario = new Funcionario();
-//		funcionario.setNome("Fulano de Tal");
-//		funcionario.setPerfil(PerfilEnum.ROLE_USUARIO);
-//		funcionario.setSenha(PasswordUtils.gerarBCrypt("123456"));
-//		funcionario.setCpf(CPF);
-//		funcionario.setEmail(EMAIL);
-//		funcionario.setEmpresa(empresa);
-//		return funcionario;
-//	}
+	private Funcionario obterDadosFuncionario(Empresa empresa) throws NoSuchAlgorithmException {
+		Funcionario funcionario = new Funcionario();
+		funcionario.setNome("Fulano de Tal");
+		funcionario.setPerfil(PerfilEnum.ROLE_USUARIO);
+		funcionario.setSenha(PasswordUtils.gerarBCrypt("123456"));
+		funcionario.setCpf(CPF);
+		funcionario.setEmail(EMAIL);
+		funcionario.setEmpresa(empresa);
+		return funcionario;
+	}
 
 	private Empresa obterDadosEmpresa() {
 		Empresa empresa = new Empresa();

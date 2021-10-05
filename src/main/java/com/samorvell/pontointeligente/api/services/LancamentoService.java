@@ -10,7 +10,7 @@ import com.samorvell.pontointeligente.api.model.Lancamento;
 
 @Service
 public interface LancamentoService {
-	
+
 	/**
 	 * Retorna uma lista paginada de lançamentos de um determinado funcionário.
 	 * 
@@ -26,7 +26,7 @@ public interface LancamentoService {
 	 * @param id
 	 * @return Optional<Lancamento>
 	 */
-	Optional<Optional<Lancamento>> buscarPorId(Long id);
+	Optional<Lancamento> buscarPorId(Long id);
 	
 	/**
 	 * Persiste um lançamento na base de dados.

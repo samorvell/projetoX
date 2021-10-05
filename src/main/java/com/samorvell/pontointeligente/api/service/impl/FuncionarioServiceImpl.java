@@ -1,4 +1,4 @@
-package com.samorvell.pontointeligente.api.impl;
+package com.samorvell.pontointeligente.api.service.impl;
 
 import java.util.Optional;
 

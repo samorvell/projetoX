@@ -2,22 +2,21 @@ package com.samorvell.pontointeligente.api.dtos;
 
 import javax.validation.constraints.NotBlank;
 
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Optional;
 
 @ToString
+@NoArgsConstructor
 public class LancamentoDto {
-	
+
 	private Optional<Long> id = Optional.empty();
 	private String data;
 	private String tipo;
 	private String descricao;
 	private String localizacao;
 	private Long funcionarioId;
-
-	public LancamentoDto() {
-	}
 
 	public Optional<Long> getId() {
 		return id;
@@ -51,7 +50,7 @@ public class LancamentoDto {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	
+
 	public String getLocalizacao() {
 		return localizacao;
 	}
@@ -68,5 +67,4 @@ public class LancamentoDto {
 		this.funcionarioId = funcionarioId;
 	}
 
-	
 }

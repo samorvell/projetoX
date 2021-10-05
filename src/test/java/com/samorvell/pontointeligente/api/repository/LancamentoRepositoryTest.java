@@ -29,72 +29,72 @@ import com.samorvell.pontointeligente.api.utils.PasswordUtils;
 @ActiveProfiles("test")
 public class LancamentoRepositoryTest {
 	
-//	@Autowired
-//	private LancamentoRepository lancamentoRepository;
-//	
-//	@Autowired
-//	private FuncionarioRepository funcionarioRepository;
-//	
-//	@Autowired
-//	private EmpresaRepository empresaRepository;
-//	
-//	private Long funcionarioId;
-//
-//	@Before
-//	public void setUp() throws Exception {
-//		Empresa empresa = this.empresaRepository.save(obterDadosEmpresa());
-//		
-//		Funcionario funcionario = this.funcionarioRepository.save(obterDadosFuncionario(empresa));
-//		this.funcionarioId = funcionario.getId();
-//		
-//		this.lancamentoRepository.save(obterDadosLancamentos(funcionario));
-//		this.lancamentoRepository.save(obterDadosLancamentos(funcionario));
-//	}
-//
-//	@After
-//	public void tearDown() throws Exception {
-//		this.empresaRepository.deleteAll();
-//	}
-//
-//	@Test
-//	public void testBuscarLancamentosPorFuncionarioId() {
-//		List<Lancamento> lancamentos = this.lancamentoRepository.findByFuncionarioId(funcionarioId);
-//		
-//		assertEquals(2, lancamentos.size());
-//	}
-//	
-//	@Test
-//	public void testBuscarLancamentosPorFuncionarioIdPaginado() {
-//		PageRequest page = new PageRequest(0, 10);
-//		Page<Lancamento> lancamentos = this.lancamentoRepository.findByFuncionarioId(funcionarioId, page);
-//		
-//		assertEquals(2, lancamentos.getTotalElements());
-//	}
-//	
-//	private Lancamento obterDadosLancamentos(Funcionario funcionario) {
-//		Lancamento lancameto = new Lancamento();
-//		lancameto.setData(new Date());
-//		lancameto.setTipo(TipoEnum.INICIO_ALMOCO);
-//		lancameto.setFuncionario(funcionario);
-//		return lancameto;
-//	}
-//
-//	private Funcionario obterDadosFuncionario(Empresa empresa) throws NoSuchAlgorithmException {
-//		Funcionario funcionario = new Funcionario();
-//		funcionario.setNome("Fulano de Tal");
-//		funcionario.setPerfil(PerfilEnum.ROLE_USUARIO);
-//		funcionario.setSenha(PasswordUtils.gerarBCrypt("123456"));
-//		funcionario.setCpf("24291173474");
-//		funcionario.setEmail("email@email.com");
-//		funcionario.setEmpresa(empresa);
-//		return funcionario;
-//	}
-//
-//	private Empresa obterDadosEmpresa() {
-//		Empresa empresa = new Empresa();
-//		empresa.setRazaoSocial("Empresa de exemplo");
-//		empresa.setCnpj("51463645000100");
-//		return empresa;
-//	}
+	@Autowired
+	private LancamentoRepository lancamentoRepository;
+	
+	@Autowired
+	private FuncionarioRepository funcionarioRepository;
+	
+	@Autowired
+	private EmpresaRepository empresaRepository;
+	
+	private Long funcionarioId;
+
+	@Before
+	public void setUp() throws Exception {
+		Empresa empresa = this.empresaRepository.save(obterDadosEmpresa());
+		
+		Funcionario funcionario = this.funcionarioRepository.save(obterDadosFuncionario(empresa));
+		this.funcionarioId = funcionario.getId();
+		
+		this.lancamentoRepository.save(obterDadosLancamentos(funcionario));
+		this.lancamentoRepository.save(obterDadosLancamentos(funcionario));
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		this.empresaRepository.deleteAll();
+	}
+
+	@Test
+	public void testBuscarLancamentosPorFuncionarioId() {
+		List<Lancamento> lancamentos = this.lancamentoRepository.findByFuncionarioId(funcionarioId);
+		
+		assertEquals(2, lancamentos.size());
+	}
+	
+	@Test
+	public void testBuscarLancamentosPorFuncionarioIdPaginado() {
+		PageRequest page = PageRequest.of(0, 10);
+		Page<Lancamento> lancamentos = this.lancamentoRepository.findByFuncionarioId(funcionarioId, page);
+		
+		assertEquals(2, lancamentos.getTotalElements());
+	}
+	
+	private Lancamento obterDadosLancamentos(Funcionario funcionario) {
+		Lancamento lancameto = new Lancamento();
+		lancameto.setData(new Date());
+		lancameto.setTipo(TipoEnum.INICIO_ALMOCO);
+		lancameto.setFuncionario(funcionario);
+		return lancameto;
+	}
+
+	private Funcionario obterDadosFuncionario(Empresa empresa) throws NoSuchAlgorithmException {
+		Funcionario funcionario = new Funcionario();
+		funcionario.setNome("Fulano de Tal");
+		funcionario.setPerfil(PerfilEnum.ROLE_USUARIO);
+		funcionario.setSenha(PasswordUtils.gerarBCrypt("123456"));
+		funcionario.setCpf("24291173474");
+		funcionario.setEmail("email@email.com");
+		funcionario.setEmpresa(empresa);
+		return funcionario;
+	}
+
+	private Empresa obterDadosEmpresa() {
+		Empresa empresa = new Empresa();
+		empresa.setRazaoSocial("Empresa de exemplo");
+		empresa.setCnpj("51463645000100");
+		return empresa;
+	}
 
 }
