@@ -66,7 +66,7 @@ public class CadastroPFController {
 			return ResponseEntity.badRequest().body(response);
 		}
 		
-		Optional<Empresa> empresa = this.empresaService.buscarPorCnpj(cadastroPFDto.getCnpj());
+		Optional<Empresa> empresa = this.empresaService.buscarPorCnpj(cadastroPFDto.getEmpresa_id());
 		empresa.ifPresent(emp -> funcionario.setEmpresa(emp));
 		this.funcionarioService.persistir(funcionario);
 
@@ -81,7 +81,7 @@ public class CadastroPFController {
 	 * @param result
 	 */
 	private void validarDadosExistentes(CadastroPFDto cadastroPFDto, BindingResult result) {
-		Optional<Empresa> empresa = this.empresaService.buscarPorCnpj(cadastroPFDto.getCnpj());
+		Optional<Empresa> empresa = this.empresaService.buscarPorCnpj(cadastroPFDto.getEmpresa_id());
 		if (!empresa.isPresent()) {
 			result.addError(new ObjectError("empresa", "Empresa não cadastrada."));
 		}
@@ -130,7 +130,7 @@ public class CadastroPFController {
 		cadastroPFDto.setNome(funcionario.getNome());
 		cadastroPFDto.setEmail(funcionario.getEmail());
 		cadastroPFDto.setCpf(funcionario.getCpf());
-		cadastroPFDto.setCnpj(funcionario.getEmpresa().getCnpj());
+		//cadastroPFDto.setEmpresa_id(());
 		funcionario.getQtdHorasAlmocoOpt().ifPresent(qtdHorasAlmoco -> cadastroPFDto
 				.setQtdHorasAlmoco(Optional.of(Float.toString(qtdHorasAlmoco))));
 		funcionario.getQtdHorasTrabalhoDiaOpt().ifPresent(
