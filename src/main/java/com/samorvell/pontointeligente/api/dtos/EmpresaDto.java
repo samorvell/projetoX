@@ -14,4 +14,6 @@ public class EmpresaDto {
 	private Long id;
 	private String razaoSocial;
 	private String cnpj;
+
+	
 }

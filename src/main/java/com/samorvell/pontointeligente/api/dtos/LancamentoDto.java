@@ -1,6 +1,7 @@
 package com.samorvell.pontointeligente.api.dtos;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -18,6 +19,7 @@ public class LancamentoDto {
 	private String localizacao;
 	private Long funcionarioId;
 
+
 	public Optional<Long> getId() {
 		return id;
 	}
@@ -26,7 +28,7 @@ public class LancamentoDto {
 		this.id = id;
 	}
 
-	@NotBlank(message = "Data não pode ser vazia.")
+	@NotEmpty(message = "Data não pode ser vazia.")
 	public String getData() {
 		return data;
 	}

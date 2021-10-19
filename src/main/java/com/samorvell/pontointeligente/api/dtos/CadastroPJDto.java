@@ -4,6 +4,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -13,7 +14,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class CadastroPJDto {
-
+	
 	private Long id;
 	private String nome;
 	private String email;
@@ -21,7 +22,9 @@ public class CadastroPJDto {
 	private String cpf;
 	private String razaoSocial;
 	private String cnpj;
+
 	
+
 	public Long getId() {
 		return id;
 	}
@@ -31,7 +34,7 @@ public class CadastroPJDto {
 	}
 
 	@NotEmpty(message = "Nome não pode ser vazio.")
-	@Size(min = 3, max = 200, message = "Nome deve conter entre 3 e 200 caracteres.")
+	@Length(min = 3, max = 200, message = "Nome deve conter entre 3 e 200 caracteres.")
 	public String getNome() {
 		return nome;
 	}
@@ -41,7 +44,7 @@ public class CadastroPJDto {
 	}
 
 	@NotEmpty(message = "Email não pode ser vazio.")
-	@Size(min = 5, max = 200, message = "Email deve conter entre 5 e 200 caracteres.")
+	@Length(min = 5, max = 200, message = "Email deve conter entre 5 e 200 caracteres.")
 	@Email(message="Email inválido.")
 	public String getEmail() {
 		return email;
@@ -61,7 +64,7 @@ public class CadastroPJDto {
 	}
 
 	@NotEmpty(message = "CPF não pode ser vazio.")
-	@CPF
+	@CPF(message="CPF inválido")
 	public String getCpf() {
 		return cpf;
 	}
@@ -71,7 +74,7 @@ public class CadastroPJDto {
 	}
 
 	@NotEmpty(message = "Razão social não pode ser vazio.")
-	@Size(min = 5, max = 200, message = "Razão social deve conter entre 5 e 200 caracteres.")
+	@Length(min = 5, max = 200, message = "Razão social deve conter entre 5 e 200 caracteres.")
 	public String getRazaoSocial() {
 		return razaoSocial;
 	}
@@ -89,4 +92,5 @@ public class CadastroPJDto {
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
 	}
+
 }

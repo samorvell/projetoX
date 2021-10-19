@@ -10,6 +10,7 @@ import org.apache.commons.lang3.EnumUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -36,10 +37,6 @@ import com.samorvell.pontointeligente.api.response.Response;
 import com.samorvell.pontointeligente.api.services.FuncionarioService;
 import com.samorvell.pontointeligente.api.services.LancamentoService;
 
-import lombok.Value;
-
-
-
 @RestController
 @RequestMapping("/api/lancamentos")
 @CrossOrigin(origins = "*")
@@ -53,11 +50,9 @@ public class LancamentoController {
 
 	@Autowired
 	private FuncionarioService funcionarioService;
-	
-	
-	
-	//@Value("${paginacao.qtd_por_pagina}")
-	private int qtdPorPagina = 25;
+
+	@Value("${paginacao.qtd_por_pagina}")
+	private int qtdPorPagina;
 
 	public LancamentoController() {
 	}
@@ -70,16 +65,13 @@ public class LancamentoController {
 	 */
 	@GetMapping(value = "/funcionario/{funcionarioId}")
 	public ResponseEntity<Response<Page<LancamentoDto>>> listarPorFuncionarioId(
-			@PathVariable("funcionarioId") Long funcionarioId,
-			@RequestParam(value = "pag", defaultValue = "0") int pag,
-			@RequestParam(value = "ord", defaultValue = "id") String ord)
-			//@RequestParam(value = "dir", defaultValue = "DESC") String dir) 
-			{
+			@PathVariable("funcionarioId") Long funcionarioId, @RequestParam(value = "pag", defaultValue = "0") int pag,
+			@RequestParam(value = "ord", defaultValue = "id") String ord,
+			@RequestParam(value = "dir", defaultValue = "DESC") String dir) {
 		log.info("Buscando lançamentos por ID do funcionário: {}, página: {}", funcionarioId, pag);
 		Response<Page<LancamentoDto>> response = new Response<Page<LancamentoDto>>();
 
-		//PageRequest.of(pag, qtdPorPagina, Direction.valueOf(dir), ord); 
-		PageRequest pageRequest = PageRequest.of(pag, qtdPorPagina, Direction.DESC,ord);
+		PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
 		Page<Lancamento> lancamentos = this.lancamentoService.buscarPorFuncionarioId(funcionarioId, pageRequest);
 		Page<LancamentoDto> lancamentosDto = lancamentos.map(lancamento -> this.converterLancamentoDto(lancamento));
 
@@ -115,7 +107,7 @@ public class LancamentoController {
 	 * @param lancamento
 	 * @param result
 	 * @return ResponseEntity<Response<LancamentoDto>>
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	@PostMapping
 	public ResponseEntity<Response<LancamentoDto>> adicionar(@Valid @RequestBody LancamentoDto lancamentoDto,
@@ -142,7 +134,7 @@ public class LancamentoController {
 	 * @param id
 	 * @param lancamentoDto
 	 * @return ResponseEntity<Response<Lancamento>>
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Response<LancamentoDto>> atualizar(@PathVariable("id") Long id,
@@ -188,8 +180,7 @@ public class LancamentoController {
 	}
 
 	/**
-	 * Valida um funcionário, verificando se ele é existente e válido no
-	 * sistema.
+	 * Valida um funcionário, verificando se ele é existente e válido no sistema.
 	 * 
 	 * @param lancamentoDto
 	 * @param result
@@ -231,9 +222,10 @@ public class LancamentoController {
 	 * @param lancamentoDto
 	 * @param result
 	 * @return Lancamento
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
-	private Lancamento converterDtoParaLancamento(LancamentoDto lancamentoDto, BindingResult result) throws ParseException {
+	private Lancamento converterDtoParaLancamento(LancamentoDto lancamentoDto, BindingResult result)
+			throws ParseException {
 		Lancamento lancamento = new Lancamento();
 
 		if (lancamentoDto.getId().isPresent()) {
@@ -260,8 +252,5 @@ public class LancamentoController {
 
 		return lancamento;
 	}
-	
-	
 
-	
 }

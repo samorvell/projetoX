@@ -24,7 +24,7 @@ public class EmpresaController {
 
 	private static final Logger log = LoggerFactory.getLogger(EmpresaController.class);
 
-	
+	@Autowired
 	private EmpresaService empresaService;
 
 	public EmpresaController() {
@@ -66,5 +66,6 @@ public class EmpresaController {
 
 		return empresaDto;
 	}
+
 
 }

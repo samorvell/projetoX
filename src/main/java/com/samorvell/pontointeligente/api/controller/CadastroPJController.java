@@ -26,8 +26,8 @@ import com.samorvell.pontointeligente.api.services.FuncionarioService;
 import com.samorvell.pontointeligente.api.utils.PasswordUtils;
 
 @RestController
-@RequestMapping("/api/cadastrarpj")
-@CrossOrigin(origins = "*") //para aceitar requisoções de qualquer lugar
+@RequestMapping("/api/cadastrar-pj")
+@CrossOrigin(origins = "*")
 public class CadastroPJController {
 
 	private static final Logger log = LoggerFactory.getLogger(CadastroPJController.class);
