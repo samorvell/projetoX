@@ -28,7 +28,7 @@ import com.samorvell.pontointeligente.api.response.Response;
 import com.samorvell.pontointeligente.api.security.dto.JwtAuthenticationDto;
 import com.samorvell.pontointeligente.api.security.dto.TokenDto;
 import com.samorvell.pontointeligente.api.security.utils.JwtTokenUtil;
-
+@RequestMapping("/auth")
 @RestController
 @CrossOrigin(origins = "*")
 public class AuthenticationController {
@@ -54,7 +54,7 @@ public class AuthenticationController {
 	 * @return ResponseEntity<Response<TokenDto>>
 	 * @throws AuthenticationException
 	 */
-	@PostMapping("/auth")
+	@PostMapping
 	public ResponseEntity<Response<TokenDto>> gerarTokenJwt(
 			@Valid @RequestBody JwtAuthenticationDto authenticationDto, BindingResult result)
 			throws AuthenticationException {
