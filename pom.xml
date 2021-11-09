@@ -124,12 +124,7 @@
 			<artifactId>ehcache</artifactId>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
-		<dependency>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-compiler-plugin</artifactId>
-			<version>3.6.2</version>
-		</dependency>
+		
 
 
 
@@ -149,16 +144,6 @@
 						<groupId>com.heroku.sdk</groupId>
 						<artifactId>heroku-maven-plugin</artifactId>
 						<version>3.0.4</version>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<source>1.8</source>
-						<target>1.8</target>
-						<configuration>
-							<release>1.8</release>
-							<compilerArgs>--enable-preview</compilerArgs>
-						</configuration>
 					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
