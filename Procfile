@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -Dspring.profile.active= -jar target/pontointeligente.api-0.0.1-SNAPSHOT
+web: java -Dserver.port=$PORT -jar target/pontointeligente.api-0.0.1-SNAPSHOT -Dfile.encoding=UTF-8 -XX:+UseContainerSupport
