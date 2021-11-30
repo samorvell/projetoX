@@ -172,7 +172,7 @@
 								<manifest>
 									<addClasspath>true</addClasspath>
 									<classpathPrefix>lib/</classpathPrefix>
-									<mainClass>com.samorvell.pontointeligente.api.Application</mainClass>
+									<mainClass>com.samorvell.Application</mainClass>
 								</manifest>
 							</archive>
 						</configuration>
