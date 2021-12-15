@@ -18,10 +18,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.samorvell.pontointeligente.api.model.Empresa;
 import com.samorvell.pontointeligente.api.repository.EmpresaRepository;
-
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@ActiveProfiles("test")
+//
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
+//@ActiveProfiles("test")
 public class EmpresaServiceTest {
 
 	@MockBean

@@ -32,10 +32,10 @@ import com.samorvell.pontointeligente.api.model.Lancamento;
 import com.samorvell.pontointeligente.api.services.FuncionarioService;
 import com.samorvell.pontointeligente.api.services.LancamentoService;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
+//@AutoConfigureMockMvc
+//@ActiveProfiles("test")
 public class LancamentoControllerTest {
 
 	@Autowired

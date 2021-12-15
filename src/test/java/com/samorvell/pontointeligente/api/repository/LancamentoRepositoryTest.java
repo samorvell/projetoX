@@ -24,9 +24,9 @@ import com.samorvell.pontointeligente.api.model.Funcionario;
 import com.samorvell.pontointeligente.api.model.Lancamento;
 import com.samorvell.pontointeligente.api.utils.PasswordUtils;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@ActiveProfiles("test")
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
+//@ActiveProfiles("test")
 public class LancamentoRepositoryTest {
 	
 	@Autowired

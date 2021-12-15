@@ -74,6 +74,13 @@ public class LancamentoController {
 		PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
 		Page<Lancamento> lancamentos = this.lancamentoService.buscarPorFuncionarioId(funcionarioId, pageRequest);
 		Page<LancamentoDto> lancamentosDto = lancamentos.map(lancamento -> this.converterLancamentoDto(lancamento));
+		
+		if (lancamentos.isEmpty()) {
+			log.info("Lançamento não encontrado para o ID: {}", funcionarioId);
+			response.getErrors().add("Lançamento não encontrado para o id " + funcionarioId);
+			return ResponseEntity.badRequest().body(response);
+		}
+
 
 		response.setData(lancamentosDto);
 		return ResponseEntity.ok(response);

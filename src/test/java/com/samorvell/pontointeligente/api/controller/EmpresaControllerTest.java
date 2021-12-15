@@ -25,10 +25,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.samorvell.pontointeligente.api.model.Empresa;
 import com.samorvell.pontointeligente.api.services.EmpresaService;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
+//@AutoConfigureMockMvc
+//@ActiveProfiles("test")
 public class EmpresaControllerTest {
 
 	@Autowired

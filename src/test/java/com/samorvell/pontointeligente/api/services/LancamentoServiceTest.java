@@ -22,10 +22,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.samorvell.pontointeligente.api.model.Lancamento;
 import com.samorvell.pontointeligente.api.repository.LancamentoRepository;
-
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@ActiveProfiles("test")
+//
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
+//@ActiveProfiles("test")
 public class LancamentoServiceTest {
 
 	@MockBean

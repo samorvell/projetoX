@@ -150,11 +150,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M3</version>
-			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -162,7 +158,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>br.leroymerlin.LmApiApplication</mainClass>
+							<mainClass>com.samorvell.pontointeligente..api.Application</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
