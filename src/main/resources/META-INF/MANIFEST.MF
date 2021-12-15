@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Built-By: Samorvell
+Build-Jdk: 11
+Main-Class: com.samorvell.Application
+Archiver-Version: Plexus Archiver
