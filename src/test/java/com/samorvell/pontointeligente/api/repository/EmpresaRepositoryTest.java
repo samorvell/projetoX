@@ -23,29 +23,29 @@ import com.samorvell.pontointeligente.api.model.Empresa;
 //@SpringBootTest
 //@ActiveProfiles("test")
 public class EmpresaRepositoryTest {
-	@Autowired
-	private EmpresaRepository empresaRepository;
-	
-	private static final String CNPJ = "51463645000100";
-
-	@Before
-	public void setUp() throws Exception {
-		Empresa empresa = new Empresa();
-		empresa.setRazaoSocial("Empresa de exemplo");
-		empresa.setCnpj(CNPJ);
-		this.empresaRepository.save(empresa);
-	}
-	
-	@After
-    public final void tearDown() { 
-		this.empresaRepository.deleteAll();
-	}
-
-	@Test
-	public void tesAtBuscarPorCnpj() {
-		Empresa empresa = this.empresaRepository.findByCnpj(CNPJ);
-		
-		assertEquals(CNPJ, empresa.getCnpj());
-	}
+//	@Autowired
+//	private EmpresaRepository empresaRepository;
+//	
+//	private static final String CNPJ = "51463645000100";
+//
+//	@Before
+//	public void setUp() throws Exception {
+//		Empresa empresa = new Empresa();
+//		empresa.setRazaoSocial("Empresa de exemplo");
+//		empresa.setCnpj(CNPJ);
+//		this.empresaRepository.save(empresa);
+//	}
+//	
+//	@After
+//    public final void tearDown() { 
+//		this.empresaRepository.deleteAll();
+//	}
+//
+//	@Test
+//	public void tesAtBuscarPorCnpj() {
+//		Empresa empresa = this.empresaRepository.findByCnpj(CNPJ);
+//		
+//		assertEquals(CNPJ, empresa.getCnpj());
+//	}
 
 }
