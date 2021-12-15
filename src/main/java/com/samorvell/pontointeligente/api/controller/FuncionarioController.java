@@ -9,18 +9,25 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.samorvell.pontointeligente.api.dtos.FuncionarioDto;
+import com.samorvell.pontointeligente.api.dtos.LancamentoDto;
 import com.samorvell.pontointeligente.api.model.Funcionario;
+import com.samorvell.pontointeligente.api.model.Lancamento;
 import com.samorvell.pontointeligente.api.response.Response;
 import com.samorvell.pontointeligente.api.services.FuncionarioService;
 import com.samorvell.pontointeligente.api.utils.PasswordUtils;
@@ -69,6 +76,29 @@ public class FuncionarioController {
 		this.funcionarioService.persistir(funcionario.get());
 		response.setData(this.converterFuncionarioDto(funcionario.get()));
 
+		return ResponseEntity.ok(response);
+	}
+	
+	
+	/**
+	 * Retorna um funcionário por ID.
+	 * 
+	 * @param id
+	 * @return ResponseEntity<Response<FuncionarioDto>>
+	 */
+	@GetMapping(value = "/funcionario/{id}")
+	public ResponseEntity<Response<FuncionarioDto>> buscarPorId(@PathVariable("id") Long id) {
+		log.info("Buscando funcionário por ID: {}", id);
+		Response<FuncionarioDto> response = new Response<FuncionarioDto>();
+		Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(id);
+
+		if (!funcionario.isPresent()) {
+			log.info("Funcionário não encontrado para o ID: {}", id);
+			response.getErrors().add("Funcionário não encontrado para o id " + id);
+			return ResponseEntity.badRequest().body(response);
+		}
+
+		response.setData(this.converterFuncionarioIdDto(funcionario.get()));
 		return ResponseEntity.ok(response);
 	}
 
@@ -126,5 +156,27 @@ public class FuncionarioController {
 
 		return funcionarioDto;
 	}
+	
+	/**
+	 * Retorna um DTO com os dados de um funcionário.
+	 * 
+	 * @param funcionario
+	 * @return FuncionarioDto
+	 */
+	private FuncionarioDto converterFuncionarioIdDto(Funcionario funcionario) {
+		FuncionarioDto funcionarioDto = new FuncionarioDto();
+		funcionarioDto.setId(funcionario.getId());
+		//funcionarioDto.setEmail(funcionario.getEmail());
+		funcionarioDto.setNome(funcionario.getNome());
+		funcionario.getQtdHorasAlmocoOpt().ifPresent(
+				qtdHorasAlmoco -> funcionarioDto.setQtdHorasAlmoco(Optional.of(Float.toString(qtdHorasAlmoco))));
+		funcionario.getQtdHorasTrabalhoDiaOpt().ifPresent(
+				qtdHorasTrabDia -> funcionarioDto.setQtdHorasTrabalhoDia(Optional.of(Float.toString(qtdHorasTrabDia))));
+		funcionario.getValorHoraOpt()
+				.ifPresent(valorHora -> funcionarioDto.setValorHora(Optional.of(valorHora.toString())));
+
+		return funcionarioDto;
+	}
+	
 
 }

@@ -7,7 +7,6 @@
 	<groupId>com.samorvell</groupId>
 	<artifactId>pontointeligente.api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
 	<name>pontointeligente.api</name>
 	<description>Demo project for Spring Boot</description>
 
@@ -20,34 +19,13 @@
 
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
@@ -60,7 +38,11 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -75,12 +57,6 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
-
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.junit.vintage/junit-vintage-engine -->
@@ -98,16 +74,23 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jdk8 -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-jdk8</artifactId>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.6</version>
+
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jdk8 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jdk8</artifactId>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
@@ -122,30 +105,12 @@
 			<version>3.16.0</version>
 		</dependency>
 
-<<<<<<< HEAD
-		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>2.6.1</version>
-		</dependency>
-=======
->>>>>>> ea7f4a1a05d698a186a87a8e3a9315d43cb6caee
 		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.6.1</version>
 		</dependency>
-<<<<<<< HEAD
-
-		<!-- https://mvnrepository.com/artifact/net.sf.ehcache/ehcache -->
-		<dependency>
-			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache</artifactId>
-		</dependency>
-=======
->>>>>>> ea7f4a1a05d698a186a87a8e3a9315d43cb6caee
 
 		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
 		<dependency>
@@ -159,18 +124,11 @@
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
 		</dependency>
-
-
-
 	</dependencies>
 	<build>
 	<pluginManagement>
 		<plugins>
 			<plugin>
-<<<<<<< HEAD
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-=======
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>2.19.1</version>
@@ -189,11 +147,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M3</version>
-			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -201,7 +155,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>br.leroymerlin.LmApiApplication</mainClass>
+							<mainClass>com.samorvell.pontointeligente..api.Application</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -220,15 +174,9 @@
 						</exclude>
 					</excludes>
 				</configuration>
->>>>>>> ea7f4a1a05d698a186a87a8e3a9315d43cb6caee
 			</plugin>
 		</plugins>
 		</pluginManagement>
 	</build>
 
-<<<<<<< HEAD
 </project>
- 
-=======
-</project>
->>>>>>> ea7f4a1a05d698a186a87a8e3a9315d43cb6caee
