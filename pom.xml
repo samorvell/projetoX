@@ -122,30 +122,28 @@
 			<version>3.16.0</version>
 		</dependency>
 
-<<<<<<< HEAD
+
 		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>2.6.1</version>
 		</dependency>
-=======
->>>>>>> ea7f4a1a05d698a186a87a8e3a9315d43cb6caee
+
 		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.6.1</version>
 		</dependency>
-<<<<<<< HEAD
+
 
 		<!-- https://mvnrepository.com/artifact/net.sf.ehcache/ehcache -->
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
 		</dependency>
-=======
->>>>>>> ea7f4a1a05d698a186a87a8e3a9315d43cb6caee
+
 
 		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
 		<dependency>
@@ -164,71 +162,70 @@
 
 	</dependencies>
 	<build>
-	<pluginManagement>
-		<plugins>
-			<plugin>
-<<<<<<< HEAD
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-=======
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>2.19.1</version>
-				<executions>
-					<execution>
-						<id>integration-test</id>
-						<goals>
-							<goal>integration-test</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>verify</id>
-						<goals>
-							<goal>verify</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M3</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>com.samorvell.pontointeligente.api.Application</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.1.0</version>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.springframework.boot</groupId>
-							<artifactId>spring-boot-maven-plugin</artifactId>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
->>>>>>> ea7f4a1a05d698a186a87a8e3a9315d43cb6caee
-			</plugin>
-		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+
+					
+
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>2.19.1</version>
+					<executions>
+						<execution>
+							<id>integration-test</id>
+							<goals>
+								<goal>integration-test</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>verify</id>
+							<goals>
+								<goal>verify</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>3.0.0-M3</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.4</version>
+					<configuration>
+						<archive>
+							<manifest>
+								<mainClass>com.samorvell.pontointeligente.api.Application</mainClass>
+							</manifest>
+						</archive>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.1.0</version>
+					<configuration>
+						<excludes>
+							<exclude>
+								<groupId>org.springframework.boot</groupId>
+								<artifactId>spring-boot-maven-plugin</artifactId>
+								<groupId>org.projectlombok</groupId>
+								<artifactId>lombok</artifactId>
+							</exclude>
+						</excludes>
+					</configuration>
+
+				</plugin>
+			</plugins>
 		</pluginManagement>
 	</build>
 
-<<<<<<< HEAD
+
 </project>
- 
-=======
-</project>
->>>>>>> ea7f4a1a05d698a186a87a8e3a9315d43cb6caee
+
+
+
+
