@@ -162,7 +162,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>br.leroymerlin.LmApiApplication</mainClass>
+							<mainClass>com.samorvell.pontointeligente.api.Application</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
