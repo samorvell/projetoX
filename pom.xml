@@ -199,10 +199,7 @@
 						</archive>
 					</configuration>
 				</plugin>
-				<plugin>
-					<groupId>org.Apache.maven.plugins</groupId>
-					<artifactId>maven-shade-plugin</artifactId>
-				</plugin>
+				
 				<plugin>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
