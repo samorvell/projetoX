@@ -7,25 +7,34 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.samorvell.pontointeligente.api.model.Empresa;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 
 public class FuncionarioDto {
 	
 	private Long id;
+	private String nameEmpresa;
 	private String nome;
 	private String email;
 	private Optional<String> senha = Optional.empty();
 	private Optional<String> valorHora = Optional.empty();
 	private Optional<String> qtdHorasTrabalhoDia = Optional.empty();
 	private Optional<String> qtdHorasAlmoco = Optional.empty();
+	private Long empresaId;
+	
 
 
 	public Long getId() {

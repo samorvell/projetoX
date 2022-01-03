@@ -31,6 +31,28 @@ public class EmpresaController {
 	}
 
 	/**
+	 * Retorna uma empresa dado um ID.
+	 * 
+	 * @param cnpj
+	 * @return ResponseEntity<Response<EmpresaDto>>
+	 */
+	@GetMapping(value = "/id/{id}")
+	public ResponseEntity<Response<EmpresaDto>> buscarEmpresaPorId(@PathVariable("id") Long id) {
+		log.info("Buscando empresa por CNPJ: {}", id);
+		Response<EmpresaDto> response = new Response<EmpresaDto>();
+		Optional<Empresa> empresa = empresaService.buscarEmpresaPorId(id);
+
+		if (!empresa.isPresent()) {
+			log.info("Empresa não encontrada para o Id: {}", id);
+			response.getErrors().add("Empresa não encontrada para o Id " + id);
+			return ResponseEntity.badRequest().body(response);
+		}
+
+		response.setData(this.converterEmpresaDto(empresa.get()));
+		return ResponseEntity.ok(response);
+	}
+	
+	/**
 	 * Retorna uma empresa dado um CNPJ.
 	 * 
 	 * @param cnpj

@@ -29,6 +29,7 @@ import com.samorvell.pontointeligente.api.dtos.LancamentoDto;
 import com.samorvell.pontointeligente.api.model.Funcionario;
 import com.samorvell.pontointeligente.api.model.Lancamento;
 import com.samorvell.pontointeligente.api.response.Response;
+import com.samorvell.pontointeligente.api.services.EmpresaService;
 import com.samorvell.pontointeligente.api.services.FuncionarioService;
 import com.samorvell.pontointeligente.api.utils.PasswordUtils;
 
@@ -41,6 +42,8 @@ public class FuncionarioController {
 
 	@Autowired
 	private FuncionarioService funcionarioService;
+	
+	private EmpresaService empresaService;
 
 	public FuncionarioController() {
 	}
@@ -82,7 +85,7 @@ public class FuncionarioController {
 	
 	/**
 	 * Retorna um funcionário por ID.
-	 * 
+	 * buscarPorEmail
 	 * @param id
 	 * @return ResponseEntity<Response<FuncionarioDto>>
 	 */
@@ -95,6 +98,28 @@ public class FuncionarioController {
 		if (!funcionario.isPresent()) {
 			log.info("Funcionário não encontrado para o ID: {}", id);
 			response.getErrors().add("Funcionário não encontrado para o id " + id);
+			return ResponseEntity.badRequest().body(response);
+		}
+
+		response.setData(this.converterFuncionarioIdDto(funcionario.get()));
+		return ResponseEntity.ok(response);
+	}
+	
+	/**
+	 * Retorna um funcionário por EMAIL.
+	 * 
+	 * @param email
+	 * @return ResponseEntity<Response<FuncionarioDto>>
+	 */
+	@GetMapping(value = "/{email}")
+	public ResponseEntity<Response<FuncionarioDto>> buscarPorEmail(@PathVariable("email") String email) {
+		log.info("Buscando funcionário por E-mail: {}", email);
+		Response<FuncionarioDto> response = new Response<FuncionarioDto>();
+		Optional<Funcionario> funcionario = this.funcionarioService.buscarPorEmail(email);
+
+		if (!funcionario.isPresent()) {
+			log.info("Funcionário não encontrado para o e-mail: {}", email);
+			response.getErrors().add("Funcionário não encontrado para o e-mail " + email);
 			return ResponseEntity.badRequest().body(response);
 		}
 
@@ -174,6 +199,8 @@ public class FuncionarioController {
 				qtdHorasTrabDia -> funcionarioDto.setQtdHorasTrabalhoDia(Optional.of(Float.toString(qtdHorasTrabDia))));
 		funcionario.getValorHoraOpt()
 				.ifPresent(valorHora -> funcionarioDto.setValorHora(Optional.of(valorHora.toString())));
+		funcionarioDto.setNameEmpresa(funcionario.getEmpresa().getRazaoSocial());
+		funcionarioDto.setEmpresaId(funcionario.getEmpresa().getId());
 
 		return funcionarioDto;
 	}

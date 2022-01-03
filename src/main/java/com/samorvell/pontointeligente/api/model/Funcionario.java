@@ -15,6 +15,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
@@ -24,6 +26,8 @@ import javax.persistence.Transient;
 
 import com.samorvell.pontointeligente.api.enums.PerfilEnum;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @ToString
@@ -34,6 +38,7 @@ public class Funcionario implements Serializable {
 	private static final long serialVersionUID = -5754246207015712518L;
 
 	private Long id;
+	private Long empresaId;
 	private String nome;
 	private String email;
 	private String senha;
@@ -46,6 +51,7 @@ public class Funcionario implements Serializable {
 	private Date dataAtualizacao;
 	private Empresa empresa;
 	private List<Lancamento> lancamentos;
+	
 
 	public Funcionario() {
 	}
@@ -59,6 +65,7 @@ public class Funcionario implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
 
 	@Column(name = "nome", nullable = false)
 	public String getNome() {
@@ -167,6 +174,8 @@ public class Funcionario implements Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumns({
+			@JoinColumn(name = "empresa_id", referencedColumnName = "id", insertable = false, updatable = false) })
 	public Empresa getEmpresa() {
 		return empresa;
 	}
@@ -194,6 +203,14 @@ public class Funcionario implements Serializable {
 		final Date atual = new Date();
 		dataCriacao = atual;
 		dataAtualizacao = atual;
+	}
+	@Column(name = "empresa_id", nullable = false)
+	public Long getEmpresaId() {
+		return empresaId;
+	}
+
+	public void setEmpresaId(Long empresaId) {
+		this.empresaId = empresaId;
 	}
 
 }

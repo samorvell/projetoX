@@ -208,14 +208,14 @@
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>3.1.0</version>
 					<configuration>
-						<excludes>
-							<exclude>
-								<groupId>org.springframework.boot</groupId>
-								<artifactId>spring-boot-maven-plugin</artifactId>
-								<groupId>org.projectlombok</groupId>
-								<artifactId>lombok</artifactId>
-							</exclude>
-						</excludes>
+<!--						<excludes>-->
+<!--							<exclude>-->
+<!--								<groupId>org.springframework.boot</groupId>-->
+<!--								<artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--								<groupId>org.projectlombok</groupId>-->
+<!--								<artifactId>lombok</artifactId>-->
+<!--							</exclude>-->
+<!--						</excludes>-->
 					</configuration>
 
 				</plugin>
