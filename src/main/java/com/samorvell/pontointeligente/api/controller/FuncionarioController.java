@@ -201,6 +201,7 @@ public class FuncionarioController {
 				.ifPresent(valorHora -> funcionarioDto.setValorHora(Optional.of(valorHora.toString())));
 		funcionarioDto.setNameEmpresa(funcionario.getEmpresa().getRazaoSocial());
 		funcionarioDto.setEmpresaId(funcionario.getEmpresa().getId());
+		funcionarioDto.setPerfil(funcionario.getPerfil());
 
 		return funcionarioDto;
 	}
