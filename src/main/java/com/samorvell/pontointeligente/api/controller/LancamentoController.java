@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,23 +66,27 @@ public class LancamentoController {
 	 */
 	@GetMapping(value = "/funcionario/{funcionarioId}")
 	public ResponseEntity<Response<Page<LancamentoDto>>> listarPorFuncionarioId(
-			@PathVariable("funcionarioId") Long funcionarioId, 
-			@RequestParam(value = "pag", defaultValue = "0") int pag,
+			@PathVariable("funcionarioId") Long funcionarioId, @RequestParam(value = "pag", defaultValue = "0") int pag,
 			@RequestParam(value = "ord", defaultValue = "id") String ord,
-			@RequestParam(value = "dir", defaultValue = "DESC") String dir) {
+			@RequestParam(value = "dir", defaultValue = "DESC") String dir,
+			@RequestHeader(value = "companyId") Long companyId) {
+
 		log.info("Buscando lançamentos por ID do funcionário: {}, página: {}", funcionarioId, pag);
 		Response<Page<LancamentoDto>> response = new Response<Page<LancamentoDto>>();
-
 		PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
 		Page<Lancamento> lancamentos = this.lancamentoService.buscarPorFuncionarioId(funcionarioId, pageRequest);
 		Page<LancamentoDto> lancamentosDto = lancamentos.map(lancamento -> this.converterLancamentoDto(lancamento));
-		
-		if (lancamentos.isEmpty()) {
+		Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(funcionarioId);
+
+		var copmpId = funcionario.get().getEmpresaId();
+		// System.out.println("paramentro empresa Id: " + companyId);
+		// System.out.println("buscando empresa Id, pelo funcionario; " + empId);
+
+		if (lancamentos.isEmpty() || companyId != copmpId) {
 			log.info("Lançamento não encontrado para o ID: {}", funcionarioId);
 			response.getErrors().add("Lançamento não encontrado para o id " + funcionarioId);
 			return ResponseEntity.badRequest().body(response);
 		}
-
 
 		response.setData(lancamentosDto);
 		return ResponseEntity.ok(response);
@@ -98,6 +103,9 @@ public class LancamentoController {
 		log.info("Buscando lançamento por ID: {}", id);
 		Response<LancamentoDto> response = new Response<LancamentoDto>();
 		Optional<Lancamento> lancamento = this.lancamentoService.buscarPorId(id);
+		//Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(funcionarioId);
+
+		//var copmpId = funcionario.get().getEmpresaId();
 
 		if (!lancamento.isPresent()) {
 			log.info("Lançamento não encontrado para o ID: {}", id);
