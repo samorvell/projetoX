@@ -113,46 +113,5 @@ public class AuthenticationController {
 		return ResponseEntity.ok(response);
 	}
 
-	/**
-	 * Convert the model to presenter
-	 *
-	 * @param model registered user
-	 * @return presenter
-	 */
-//	private AutenticationPresenter convertModelToPresenter(Funcionario model) {
-//
-//		AutenticationPresenter presenter = new AutenticationPresenter();
-//		presenter.setToken(token);
-//		presenter.setToken(jwtTokenUtil.getToken(model));
-//		presenter.setExpirationDatePassword(model.getTsPasswordExpiration());
-//		presenter.setUserId(model.getCgUser());
-//		presenter.setLogin(model.getDsLogin());
-//		presenter.setStartDateAccess(model.getDhEnd());
-//		presenter.setEndDateAccess(model.getDhStart());
-//		presenter.setUserName(model.getNaUser());
-//		presenter.setEmail(model.getDsEmail());
-//		Optional.ofNullable(termsLocalUserService.findById(model.getCgUser())).ifPresent(terms -> {
-//			presenter.setTerms(TermsLocalUserPresenter.builder()
-//					.accepted(LmApplicationUtils.integerToBooleanDefaultFalse(terms.getInAccepted()))
-//					.ethicalAccepted(LmApplicationUtils.integerToBooleanDefaultFalse(terms.getInEthicalAccepted()))
-//					.hspAccepted(LmApplicationUtils.integerToBooleanDefaultFalse(terms.getInHspAccepted())).build());
-//		});
-//		presenter.setType(new TypePresenter(model.getCdTypeAccess(), model.getTypeAccessModel().getNaTypeAccess()));
-//		presenter.setQmsEnabled(Optional.ofNullable(model.getDhQms()).map(qms -> true).orElse(false));
-//		if (model.getTsPasswordExpiration() != null && model.getTsPasswordExpiration().after(new Date())
-//				&& model.getDfPasswordSituation().equals(PasswordSituationType.CHANGE_REQUIRED.getId())) {
-//			presenter.setChangePassword(true);
-//		}
-//		presenter.setPremiumEnabled(false);
-//		if (BooleanType.YES.getId().equals(model.getIsPremium())) {
-//
-//			Date currentPremiumDate = model.getLsLocalUserPremium().stream().map(LocalUserPremiumModel::getDhPremium)
-//					.sorted(Comparator.reverseOrder()).findFirst().orElseThrow();
-//			presenter.setPremiumEnabled(
-//					currentPremiumDate.compareTo(DateUtil.toDate(LocalDateTime.now().minusHours(INTERVAL_24H))) < 0);
-//		}
-//
-//		return presenter;
-//	}
 
 }
