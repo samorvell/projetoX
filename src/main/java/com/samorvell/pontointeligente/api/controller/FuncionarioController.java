@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -88,12 +89,16 @@ public class FuncionarioController {
 	 * @return ResponseEntity<Response<FuncionarioDto>>
 	 */
 	@GetMapping(value = "/funcionario/{id}")
-	public ResponseEntity<Response<FuncionarioDto>> buscarPorId(@PathVariable("id") Long id ) {
+
+	public ResponseEntity<Response<FuncionarioDto>> buscarPorId(@PathVariable("id") Long id, 
+																@RequestHeader(value = "companyId") Long companyId) {
+
 		log.info("Buscando funcionário por ID: {}", id);
 		Response<FuncionarioDto> response = new Response<FuncionarioDto>();
 		Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(id);
+		var copmpId = funcionario.get().getEmpresaId();
 
-		if (!funcionario.isPresent()) {
+		if (!funcionario.isPresent()|| companyId != copmpId ) {
 			log.info("Funcionário não encontrado para o ID: {}", id);
 			response.getErrors().add("Funcionário não encontrado para o id " + id);
 			return ResponseEntity.badRequest().body(response);
