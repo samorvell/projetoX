@@ -25,10 +25,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.samorvell.pontointeligente.api.dtos.FuncionarioDto;
 import com.samorvell.pontointeligente.api.dtos.LancamentoDto;
 import com.samorvell.pontointeligente.api.enums.TipoEnum;
 import com.samorvell.pontointeligente.api.model.Funcionario;
@@ -47,7 +49,7 @@ public class LancamentoController {
 
 	@Autowired
 	private LancamentoService lancamentoService;
-
+	
 	@Autowired
 	private FuncionarioService funcionarioService;
 
@@ -65,14 +67,14 @@ public class LancamentoController {
 	 */
 	@GetMapping(value = "/funcionario/{funcionarioId}")
 	public ResponseEntity<Response<Page<LancamentoDto>>> listarPorFuncionarioId(
-			@PathVariable("funcionarioId") Long funcionarioId, 
-			@RequestParam(value = "pag", defaultValue = "0") int pag,
+			@PathVariable("funcionarioId") Long funcionarioId, @RequestParam(value = "pag", defaultValue = "0") int pag,
 			@RequestParam(value = "ord", defaultValue = "id") String ord,
-			@RequestParam(value = "dir", defaultValue = "DESC") String dir) {
+			@RequestParam(value = "dir", defaultValue = "DESC") String dir,
+			@RequestHeader("companyId") Integer companyId) {
 		log.info("Buscando lançamentos por ID do funcionário: {}, página: {}", funcionarioId, pag);
 		Response<Page<LancamentoDto>> response = new Response<Page<LancamentoDto>>();
-
 		PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
+		
 		Page<Lancamento> lancamentos = this.lancamentoService.buscarPorFuncionarioId(funcionarioId, pageRequest);
 		Page<LancamentoDto> lancamentosDto = lancamentos.map(lancamento -> this.converterLancamentoDto(lancamento));
 		
@@ -81,8 +83,7 @@ public class LancamentoController {
 			response.getErrors().add("Lançamento não encontrado para o id " + funcionarioId);
 			return ResponseEntity.badRequest().body(response);
 		}
-
-
+		
 		response.setData(lancamentosDto);
 		return ResponseEntity.ok(response);
 	}
@@ -98,7 +99,7 @@ public class LancamentoController {
 		log.info("Buscando lançamento por ID: {}", id);
 		Response<LancamentoDto> response = new Response<LancamentoDto>();
 		Optional<Lancamento> lancamento = this.lancamentoService.buscarPorId(id);
-
+		
 		if (!lancamento.isPresent()) {
 			log.info("Lançamento não encontrado para o ID: {}", id);
 			response.getErrors().add("Lançamento não encontrado para o id " + id);
@@ -106,6 +107,8 @@ public class LancamentoController {
 		}
 
 		response.setData(this.converterLancamentoDto(lancamento.get()));
+		
+		
 		return ResponseEntity.ok(response);
 	}
 
@@ -259,6 +262,21 @@ public class LancamentoController {
 		}
 
 		return lancamento;
+	}
+
+	/**
+	 * Retorna um DTO com os dados de um funcionário.
+	 * 
+	 * @param funcionario
+	 * @return FuncionarioDto
+	 */
+	private FuncionarioDto converterFuncionarioIdDto(Funcionario funcionario) {
+		FuncionarioDto funcionarioDto = new FuncionarioDto();
+
+		funcionarioDto.setEmpresaId(funcionario.getEmpresa().getId());
+		System.out.println("company Id: " + funcionarioDto);
+
+		return funcionarioDto;
 	}
 
 }

@@ -29,6 +29,7 @@ import com.samorvell.pontointeligente.api.dtos.LancamentoDto;
 import com.samorvell.pontointeligente.api.model.Funcionario;
 import com.samorvell.pontointeligente.api.model.Lancamento;
 import com.samorvell.pontointeligente.api.response.Response;
+import com.samorvell.pontointeligente.api.security.utils.JwtTokenUtil;
 import com.samorvell.pontointeligente.api.services.EmpresaService;
 import com.samorvell.pontointeligente.api.services.FuncionarioService;
 import com.samorvell.pontointeligente.api.utils.PasswordUtils;
@@ -40,6 +41,9 @@ public class FuncionarioController {
 
 	private static final Logger log = LoggerFactory.getLogger(FuncionarioController.class);
 
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+	
 	@Autowired
 	private FuncionarioService funcionarioService;
 	
@@ -90,7 +94,7 @@ public class FuncionarioController {
 	 * @return ResponseEntity<Response<FuncionarioDto>>
 	 */
 	@GetMapping(value = "/funcionario/{id}")
-	public ResponseEntity<Response<FuncionarioDto>> buscarPorId(@PathVariable("id") Long id) {
+	public ResponseEntity<Response<FuncionarioDto>> buscarPorId(@PathVariable("id") Long id ) {
 		log.info("Buscando funcionário por ID: {}", id);
 		Response<FuncionarioDto> response = new Response<FuncionarioDto>();
 		Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(id);

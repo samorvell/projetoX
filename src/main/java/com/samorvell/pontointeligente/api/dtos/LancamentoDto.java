@@ -1,12 +1,11 @@
 package com.samorvell.pontointeligente.api.dtos;
 
-import javax.validation.constraints.NotBlank;
+import java.util.Optional;
+
 import javax.validation.constraints.NotEmpty;
 
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import java.util.Optional;
 
 @ToString
 @NoArgsConstructor

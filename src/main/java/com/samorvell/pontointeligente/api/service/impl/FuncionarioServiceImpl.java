@@ -16,6 +16,9 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	
 	private static final Logger log = LoggerFactory.getLogger(FuncionarioServiceImpl.class);
 
+//	@Autowired
+//	private FuncionarioService funcionarioService;
+	
 	@Autowired
 	private FuncionarioRepository funcionarioRepository;
 	
@@ -30,12 +33,13 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	}
 	
 	public Optional<Funcionario> buscarPorEmail(String email) {
-		log.info("Buscando funcionário pelo email {}", email);
+		log.info("Usuário logado buscando funcionário, identificado pelo email {}", email);
 		return Optional.ofNullable(this.funcionarioRepository.findByEmail(email));
 	}
 	
 	public Optional<Funcionario> buscarPorId(Long id) {
-		log.info("Buscando funcionário pelo IDl {}", id);
+		log.info("Buscando funcionário pelo ID {}", id);
 		return Optional.ofNullable(this.funcionarioRepository.getById(id));
 	}
+	
 }
