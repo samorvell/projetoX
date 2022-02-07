@@ -9,9 +9,6 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -22,14 +19,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.samorvell.pontointeligente.api.dtos.FuncionarioDto;
-import com.samorvell.pontointeligente.api.dtos.LancamentoDto;
 import com.samorvell.pontointeligente.api.model.Funcionario;
-import com.samorvell.pontointeligente.api.model.Lancamento;
 import com.samorvell.pontointeligente.api.response.Response;
+import com.samorvell.pontointeligente.api.security.utils.JwtTokenUtil;
 import com.samorvell.pontointeligente.api.services.EmpresaService;
 import com.samorvell.pontointeligente.api.services.FuncionarioService;
 import com.samorvell.pontointeligente.api.utils.PasswordUtils;
@@ -41,6 +36,9 @@ public class FuncionarioController {
 
 	private static final Logger log = LoggerFactory.getLogger(FuncionarioController.class);
 
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+	
 	@Autowired
 	private FuncionarioService funcionarioService;
 	
@@ -91,8 +89,10 @@ public class FuncionarioController {
 	 * @return ResponseEntity<Response<FuncionarioDto>>
 	 */
 	@GetMapping(value = "/funcionario/{id}")
+
 	public ResponseEntity<Response<FuncionarioDto>> buscarPorId(@PathVariable("id") Long id, 
 																@RequestHeader(value = "companyId") Long companyId) {
+
 		log.info("Buscando funcionário por ID: {}", id);
 		Response<FuncionarioDto> response = new Response<FuncionarioDto>();
 		Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(id);
