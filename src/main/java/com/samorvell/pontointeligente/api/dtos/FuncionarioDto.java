@@ -100,5 +100,20 @@ public class FuncionarioDto {
 		this.qtdHorasAlmoco = qtdHorasAlmoco;
 	}
 
+	public void setNameEmpresa(String razaoSocial) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setEmpresaId(Long id2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setPerfil(PerfilEnum perfil2) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
