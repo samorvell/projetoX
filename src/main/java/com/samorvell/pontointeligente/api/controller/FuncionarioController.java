@@ -106,7 +106,6 @@ public class FuncionarioController {
 		Page<Funcionario> funcionarios = this.funcionarioService.buscarFuncionarioPorEmpresaId(companyId, pageRequest);
 		Page<FuncionarioDto> funcionariosDto = funcionarios.map(funcionario -> this.converterAllFuncionarioDto(funcionario));
 		
-//		Optional<Funcionario> funcionario = this.funcionarioService.buscarFuncionarioPorId(companyId);
 		
 		var company = empresaService.buscarEmpresaPorId(companyId);
 		var companyName = company.get().getRazaoSocial();
@@ -152,7 +151,7 @@ public class FuncionarioController {
 	 * @param email
 	 * @return ResponseEntity<Response<FuncionarioDto>>
 	 */
-	@GetMapping(value = "/funcionarioemail/{email}")
+	@GetMapping(value = "/{email}")
 	public ResponseEntity<Response<FuncionarioDto>> buscarPorEmail(@PathVariable("email") String email) {
 		log.info("Buscando funcionário por E-mail: {}", email);
 		Response<FuncionarioDto> response = new Response<FuncionarioDto>();
@@ -262,8 +261,8 @@ public class FuncionarioController {
 //				qtdHorasAlmoco -> funcionarioDto.setQtdHorasAlmoco(Optional.of(Float.toString(qtdHorasAlmoco))));
 //		funcionario.getQtdHorasTrabalhoDiaOpt().ifPresent(
 //				qtdHorasTrabDia -> funcionarioDto.setQtdHorasTrabalhoDia(Optional.of(Float.toString(qtdHorasTrabDia))));
-		funcionario.getValorHoraOpt()
-				.ifPresent(valorHora -> funcionarioDto.setValorHora(Optional.of(valorHora.toString())));
+//		funcionario.getValorHoraOpt()
+//				.ifPresent(valorHora -> funcionarioDto.setValorHora(Optional.of(valorHora.toString())));
 		funcionarioDto.setNameEmpresa(funcionario.getEmpresa().getRazaoSocial());
 		funcionarioDto.setEmpresaId(funcionario.getEmpresa().getId());
 		funcionarioDto.setPerfil(funcionario.getPerfil());

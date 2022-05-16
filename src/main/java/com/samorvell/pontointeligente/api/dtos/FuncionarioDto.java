@@ -22,7 +22,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @Setter
-
 public class FuncionarioDto {
 	
 	private Long id;
@@ -98,21 +97,5 @@ public class FuncionarioDto {
 	public void setQtdHorasAlmoco(Optional<String> qtdHorasAlmoco) {
 		this.qtdHorasAlmoco = qtdHorasAlmoco;
 	}
-
-	public void setNameEmpresa(String razaoSocial) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setEmpresaId(Long id2) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setPerfil(PerfilEnum perfil2) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 }

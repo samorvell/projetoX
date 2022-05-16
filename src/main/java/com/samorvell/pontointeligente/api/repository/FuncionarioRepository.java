@@ -15,7 +15,7 @@ import com.samorvell.pontointeligente.api.model.Funcionario;
 @Transactional(readOnly = true)
 @NamedQueries({
 	@NamedQuery(name = "FuncionarioRepository.findByEmpresaId", 
-			query = "SELECT func FROM Funcionario func WHERE func.empresa.id = :empresaId") })
+			query = "SELECT func FROM Funcionario func WHERE func.empresa.id = :companyId") })
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
 
 	Funcionario findByCpf(String cpf);
@@ -24,5 +24,5 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
 	
 	Funcionario findByCpfOrEmail(String cpf, String email);
 
-	Page<Funcionario> findAllByEmpresaId (@Param("empresaId")Long companyId, Pageable pageable);	
+	Page<Funcionario> findAllByEmpresaId (@Param("companyId")Long companyId, Pageable pageable);	
 }
