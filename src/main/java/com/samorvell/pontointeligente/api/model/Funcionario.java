@@ -26,10 +26,10 @@ import javax.persistence.Transient;
 
 import com.samorvell.pontointeligente.api.enums.PerfilEnum;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.ToString;
 
+@Data
 @ToString
 @Entity
 @Table(name = "funcionario")

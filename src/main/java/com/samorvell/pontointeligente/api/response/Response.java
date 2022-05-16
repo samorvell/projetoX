@@ -3,8 +3,6 @@ package com.samorvell.pontointeligente.api.response;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.samorvell.pontointeligente.api.dtos.FuncionarioDto;
-
 public class Response<T> {
 
 	private T data;
@@ -32,8 +30,4 @@ public class Response<T> {
 		this.errors = errors;
 	}
 
-//	public void setData(FuncionarioDto converterFuncionarioIdDto) {
-//		// TODO Auto-generated method stub
-//		
-//	}
 }

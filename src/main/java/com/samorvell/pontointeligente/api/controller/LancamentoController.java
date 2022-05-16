@@ -70,23 +70,17 @@ public class LancamentoController {
 			@PathVariable("funcionarioId") Long funcionarioId, @RequestParam(value = "pag", defaultValue = "0") int pag,
 			@RequestParam(value = "ord", defaultValue = "id") String ord,
 			@RequestParam(value = "dir", defaultValue = "DESC") String dir,
- 
-	
-
-			@RequestHeader(value = "companyId") Long companyId) {
-
+			@RequestHeader(value = "companyId", required = true) Long companyId) {
 
 		log.info("Buscando lançamentos por ID do funcionário: {}, página: {}", funcionarioId, pag);
 		Response<Page<LancamentoDto>> response = new Response<Page<LancamentoDto>>();
 		PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
-		
+
 		Page<Lancamento> lancamentos = this.lancamentoService.buscarPorFuncionarioId(funcionarioId, pageRequest);
 		Page<LancamentoDto> lancamentosDto = lancamentos.map(lancamento -> this.converterLancamentoDto(lancamento));
 		Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(funcionarioId);
 
 		var copmpId = funcionario.get().getEmpresaId();
-		// System.out.println("paramentro empresa Id: " + companyId);
-		// System.out.println("buscando empresa Id, pelo funcionario; " + empId);
 
 		if (lancamentos.isEmpty() || companyId != copmpId) {
 			log.info("Lançamento não encontrado para o ID: {}", funcionarioId);

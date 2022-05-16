@@ -104,6 +104,7 @@ public class CadastroPFController {
 	private Funcionario converterDtoParaFuncionario(CadastroPFDto cadastroPFDto, BindingResult result)
 			throws NoSuchAlgorithmException {
 		Funcionario funcionario = new Funcionario();
+		funcionario.setEmpresaId(cadastroPFDto.getEmpresaId());
 		funcionario.setNome(cadastroPFDto.getNome());
 		funcionario.setEmail(cadastroPFDto.getEmail());
 		funcionario.setCpf(cadastroPFDto.getCpf());
@@ -126,6 +127,7 @@ public class CadastroPFController {
 	 */
 	private CadastroPFDto converterCadastroPFDto(Funcionario funcionario) {
 		CadastroPFDto cadastroPFDto = new CadastroPFDto();
+		cadastroPFDto.setEmpresaId(funcionario.getEmpresaId());
 		cadastroPFDto.setId(funcionario.getId());
 		cadastroPFDto.setNome(funcionario.getNome());
 		cadastroPFDto.setEmail(funcionario.getEmail());

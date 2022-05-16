@@ -23,6 +23,7 @@ public class CadastroPFDto {
 	private Optional<String> qtdHorasTrabalhoDia = Optional.empty();
 	private Optional<String> qtdHorasAlmoco = Optional.empty();
 	private String cnpj;
+	private Long empresaId;
 
 	public CadastroPFDto() {
 	}
@@ -109,11 +110,12 @@ public class CadastroPFDto {
 		this.cnpj = cnpj;
 	}
 
-//	@Override
-//	public String toString() {
-//		return "FuncionarioDto [id=" + id + ", nome=" + nome + ", email=" + email + ", senha=" + senha + ", cpf=" + cpf
-//				+ ", valorHora=" + valorHora + ", qtdHorasTrabalhoDia=" + qtdHorasTrabalhoDia + ", qtdHorasAlmoco="
-//				+ qtdHorasAlmoco + ", cnpj=" + cnpj + "]";
-//	}
+	public Long getEmpresaId() {
+		return empresaId;
+	}
+
+	public void setEmpresaId(Long empresaId) {
+		this.empresaId = empresaId;
+	}
 
 }

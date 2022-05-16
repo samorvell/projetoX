@@ -2,6 +2,8 @@ package com.samorvell.pontointeligente.api.services;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.samorvell.pontointeligente.api.model.Funcionario;
@@ -41,6 +43,13 @@ public interface FuncionarioService {
 	 */
 	Optional<Funcionario> buscarPorId(Long id);
 
+	/**
+	 * Busca todos os funcionarios baseado no company id.
+	 * 
+	 * @param companyId
+	 * @return Optional<Funcionario>
+	 *  */		
+	Page<Funcionario> buscarFuncionarioPorEmpresaId(Long empresaId, PageRequest pageRequest);
 
-
+	
 }

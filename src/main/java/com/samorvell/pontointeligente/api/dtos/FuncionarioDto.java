@@ -8,7 +8,6 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import com.samorvell.pontointeligente.api.enums.PerfilEnum;
-import com.samorvell.pontointeligente.api.model.Empresa;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

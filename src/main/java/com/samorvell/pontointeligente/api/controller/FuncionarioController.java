@@ -9,6 +9,9 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -19,12 +22,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.samorvell.pontointeligente.api.dtos.FuncionarioDto;
 import com.samorvell.pontointeligente.api.model.Funcionario;
 import com.samorvell.pontointeligente.api.response.Response;
-import com.samorvell.pontointeligente.api.security.utils.JwtTokenUtil;
 import com.samorvell.pontointeligente.api.services.EmpresaService;
 import com.samorvell.pontointeligente.api.services.FuncionarioService;
 import com.samorvell.pontointeligente.api.utils.PasswordUtils;
@@ -37,13 +40,14 @@ public class FuncionarioController {
 	private static final Logger log = LoggerFactory.getLogger(FuncionarioController.class);
 
 	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
-	
-	@Autowired
 	private FuncionarioService funcionarioService;
-	
+
+	@Autowired
 	private EmpresaService empresaService;
 
+	@Value("${paginacao.qtd_por_pagina}")
+	private int qtdPorPagina;
+	
 	public FuncionarioController() {
 	}
 
@@ -80,25 +84,59 @@ public class FuncionarioController {
 
 		return ResponseEntity.ok(response);
 	}
-	
-	
+
 	/**
-	 * Retorna um funcionário por ID.
-	 * buscarPorEmail
+	 * Retorna todos funcionários por empresaId.
+	 * 
+	 * @param id
+	 * @return ResponseEntity<Response<FuncionarioDto>>
+	 */
+	@GetMapping()
+	public ResponseEntity<Response<Page<FuncionarioDto>>> listarPorEmpresaId(
+			@RequestParam(value = "pag", defaultValue = "0") int pag,
+			@RequestParam(value = "ord", defaultValue = "Id") String ord,
+			@RequestParam(value = "dir", defaultValue = "DESC") String dir,
+			@RequestHeader(value = "companyId", required = true) Long companyId) {
+		
+		log.info("Buscando fuincionarios por companyID : {}", companyId);
+		Response<Page<FuncionarioDto>> response = new Response<Page<FuncionarioDto>>();
+		PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina);
+		
+		
+		Page<Funcionario> funcionarios = this.funcionarioService.buscarFuncionarioPorEmpresaId(companyId, pageRequest);
+		Page<FuncionarioDto> funcionariosDto = funcionarios.map(funcionario -> this.converterAllFuncionarioDto(funcionario));
+		
+//		Optional<Funcionario> funcionario = this.funcionarioService.buscarFuncionarioPorId(companyId);
+		
+		var company = empresaService.buscarEmpresaPorId(companyId);
+		var companyName = company.get().getRazaoSocial();
+
+		if (funcionarios.isEmpty()) {
+			log.info("Funcionarios não encontrado para o empresa: {}", companyName);
+			response.getErrors().add("Funcionarios não encontrado para o empresa: " + companyName);
+			return ResponseEntity.badRequest().body(response);
+		}
+
+		response.setData(funcionariosDto);
+		return ResponseEntity.ok(response);
+	}
+
+	/**
+	 * Retorna um funcionário por ID. buscarPorEmail
+	 * 
 	 * @param id
 	 * @return ResponseEntity<Response<FuncionarioDto>>
 	 */
 	@GetMapping(value = "/funcionario/{id}")
-
-	public ResponseEntity<Response<FuncionarioDto>> buscarPorId(@PathVariable("id") Long id, 
-																@RequestHeader(value = "companyId") Long companyId) {
+	public ResponseEntity<Response<FuncionarioDto>> buscarPorId(@PathVariable("id") Long id,
+			@RequestHeader(value = "companyId") Long companyId) {
 
 		log.info("Buscando funcionário por ID: {}", id);
 		Response<FuncionarioDto> response = new Response<FuncionarioDto>();
 		Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(id);
 		var copmpId = funcionario.get().getEmpresaId();
 
-		if (!funcionario.isPresent()|| companyId != copmpId ) {
+		if (!funcionario.isPresent() || companyId != copmpId) {
 			log.info("Funcionário não encontrado para o ID: {}", id);
 			response.getErrors().add("Funcionário não encontrado para o id " + id);
 			return ResponseEntity.badRequest().body(response);
@@ -107,14 +145,14 @@ public class FuncionarioController {
 		response.setData(this.converterFuncionarioIdDto(funcionario.get()));
 		return ResponseEntity.ok(response);
 	}
-	
+
 	/**
 	 * Retorna um funcionário por EMAIL.
 	 * 
 	 * @param email
 	 * @return ResponseEntity<Response<FuncionarioDto>>
 	 */
-	@GetMapping(value = "/{email}")
+	@GetMapping(value = "/funcionarioemail/{email}")
 	public ResponseEntity<Response<FuncionarioDto>> buscarPorEmail(@PathVariable("email") String email) {
 		log.info("Buscando funcionário por E-mail: {}", email);
 		Response<FuncionarioDto> response = new Response<FuncionarioDto>();
@@ -175,6 +213,8 @@ public class FuncionarioController {
 		funcionarioDto.setId(funcionario.getId());
 		funcionarioDto.setEmail(funcionario.getEmail());
 		funcionarioDto.setNome(funcionario.getNome());
+		funcionarioDto.setEmpresaId(funcionario.getEmpresaId());
+		funcionarioDto.setNameEmpresa(funcionario.getEmpresa().getRazaoSocial());
 		funcionario.getQtdHorasAlmocoOpt().ifPresent(
 				qtdHorasAlmoco -> funcionarioDto.setQtdHorasAlmoco(Optional.of(Float.toString(qtdHorasAlmoco))));
 		funcionario.getQtdHorasTrabalhoDiaOpt().ifPresent(
@@ -191,15 +231,37 @@ public class FuncionarioController {
 	 * @param funcionario
 	 * @return FuncionarioDto
 	 */
+	private FuncionarioDto converterAllFuncionarioDto(Funcionario funcionario) {
+		FuncionarioDto funcionarioDto = new FuncionarioDto();
+		funcionarioDto.setId(funcionario.getId());
+		funcionarioDto.setEmail(funcionario.getEmail());
+		funcionarioDto.setNome(funcionario.getNome());
+		funcionarioDto.setEmpresaId(funcionario.getEmpresaId());
+		funcionarioDto.setPerfil(funcionario.getPerfil());
+		funcionarioDto.setNameEmpresa(funcionario.getEmpresa().getRazaoSocial());
+		
+		funcionario.getQtdHorasTrabalhoDiaOpt().ifPresent(
+				qtdHorasTrabDia -> funcionarioDto.setQtdHorasTrabalhoDia(Optional.of(Float.toString(qtdHorasTrabDia))));
+		funcionario.getValorHoraOpt()
+				.ifPresent(valorHora -> funcionarioDto.setValorHora(Optional.of(valorHora.toString())));
+
+		return funcionarioDto;
+	}
+
+	/**
+	 * Retorna um DTO com os dados de um funcionário.
+	 * 
+	 * @param funcionario
+	 * @return FuncionarioDto
+	 */
 	private FuncionarioDto converterFuncionarioIdDto(Funcionario funcionario) {
 		FuncionarioDto funcionarioDto = new FuncionarioDto();
 		funcionarioDto.setId(funcionario.getId());
-		//funcionarioDto.setEmail(funcionario.getEmail());
 		funcionarioDto.setNome(funcionario.getNome());
-		funcionario.getQtdHorasAlmocoOpt().ifPresent(
-				qtdHorasAlmoco -> funcionarioDto.setQtdHorasAlmoco(Optional.of(Float.toString(qtdHorasAlmoco))));
-		funcionario.getQtdHorasTrabalhoDiaOpt().ifPresent(
-				qtdHorasTrabDia -> funcionarioDto.setQtdHorasTrabalhoDia(Optional.of(Float.toString(qtdHorasTrabDia))));
+//		funcionario.getQtdHorasAlmocoOpt().ifPresent(
+//				qtdHorasAlmoco -> funcionarioDto.setQtdHorasAlmoco(Optional.of(Float.toString(qtdHorasAlmoco))));
+//		funcionario.getQtdHorasTrabalhoDiaOpt().ifPresent(
+//				qtdHorasTrabDia -> funcionarioDto.setQtdHorasTrabalhoDia(Optional.of(Float.toString(qtdHorasTrabDia))));
 		funcionario.getValorHoraOpt()
 				.ifPresent(valorHora -> funcionarioDto.setValorHora(Optional.of(valorHora.toString())));
 		funcionarioDto.setNameEmpresa(funcionario.getEmpresa().getRazaoSocial());
@@ -208,6 +270,5 @@ public class FuncionarioController {
 
 		return funcionarioDto;
 	}
-	
 
 }
