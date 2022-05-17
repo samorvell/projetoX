@@ -17,35 +17,35 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.samorvell.pontointeligente.api.model.Empresa;
 
-//@TestMethodOrder(MethodOrderer.Alphanumeric.class)
-//@TestInstance(Lifecycle.PER_CLASS)
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
-//@ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.Alphanumeric.class)
+@TestInstance(Lifecycle.PER_CLASS)
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@ActiveProfiles("test")
 public class EmpresaRepositoryTest {
-//	@Autowired
-//	private EmpresaRepository empresaRepository;
-//	
-//	private static final String CNPJ = "51463645000100";
-//
-//	@Before
-//	public void setUp() throws Exception {
-//		Empresa empresa = new Empresa();
-//		empresa.setRazaoSocial("Empresa de exemplo");
-//		empresa.setCnpj(CNPJ);
-//		this.empresaRepository.save(empresa);
-//	}
-//	
-//	@After
-//    public final void tearDown() { 
-//		this.empresaRepository.deleteAll();
-//	}
-//
-//	@Test
-//	public void tesAtBuscarPorCnpj() {
-//		Empresa empresa = this.empresaRepository.findByCnpj(CNPJ);
-//		
-//		assertEquals(CNPJ, empresa.getCnpj());
-//	}
+	@Autowired
+	private EmpresaRepository empresaRepository;
+	
+	private static final String CNPJ = "51463645000100";
+
+	@Before
+	public void setUp() throws Exception {
+		Empresa empresa = new Empresa();
+		empresa.setRazaoSocial("Empresa de exemplo");
+		empresa.setCnpj(CNPJ);
+		this.empresaRepository.save(empresa);
+	}
+	
+	@After
+    public final void tearDown() { 
+		this.empresaRepository.deleteAll();
+	}
+
+	@Test
+	public void tesAtBuscarPorCnpj() {
+		Empresa empresa = this.empresaRepository.findByCnpj(CNPJ);
+		
+		assertEquals(CNPJ, empresa.getCnpj());
+	}
 
 }
