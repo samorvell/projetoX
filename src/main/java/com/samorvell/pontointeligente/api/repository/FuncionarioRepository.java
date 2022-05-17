@@ -24,5 +24,7 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
 	
 	Funcionario findByCpfOrEmail(String cpf, String email);
 
-	Page<Funcionario> findAllByEmpresaId (@Param("companyId")Long companyId, Pageable pageable);	
+	Page<Funcionario> findAllByEmpresaId (@Param("companyId")Long companyId, Pageable pageable);
+	
+	Funcionario findFuncionarioById(Long id);
 }

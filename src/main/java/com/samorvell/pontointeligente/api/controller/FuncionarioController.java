@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.hibernate.validator.constraints.ISBN;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,11 +134,16 @@ public class FuncionarioController {
 		log.info("Buscando funcionário por ID: {}", id);
 		Response<FuncionarioDto> response = new Response<FuncionarioDto>();
 		Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(id);
-		var copmpId = funcionario.get().getEmpresaId();
 
-		if (!funcionario.isPresent() || companyId != copmpId) {
+		if (!funcionario.isPresent()) {
 			log.info("Funcionário não encontrado para o ID: {}", id);
 			response.getErrors().add("Funcionário não encontrado para o id " + id);
+			return ResponseEntity.badRequest().body(response);
+		}
+		var copmpId = funcionario.get().getEmpresaId();
+		if(companyId != copmpId) {
+			log.info("Empresa id do funcionario é diferente do empresa id pesquisado: {}", id);
+			response.getErrors().add("Empresa id do funcionario é diferente do empresa id pesquisado: " + id);
 			return ResponseEntity.badRequest().body(response);
 		}
 

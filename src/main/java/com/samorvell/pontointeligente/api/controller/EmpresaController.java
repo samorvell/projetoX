@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,7 +38,8 @@ public class EmpresaController {
 	 * @return ResponseEntity<Response<EmpresaDto>>
 	 */
 	@GetMapping(value = "/id/{id}")
-	public ResponseEntity<Response<EmpresaDto>> buscarEmpresaPorId(@PathVariable("id") Long id) {
+	public ResponseEntity<Response<EmpresaDto>> buscarEmpresaPorId(@PathVariable("id") Long id,
+			@RequestHeader(value = "companyId", required = true) Long companyId) {
 		log.info("Buscando empresa por CNPJ: {}", id);
 		Response<EmpresaDto> response = new Response<EmpresaDto>();
 		Optional<Empresa> empresa = empresaService.buscarEmpresaPorId(id);
