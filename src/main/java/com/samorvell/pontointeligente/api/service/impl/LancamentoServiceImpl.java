@@ -1,5 +1,6 @@
 package com.samorvell.pontointeligente.api.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -27,6 +28,11 @@ public class LancamentoServiceImpl implements LancamentoService {
 	public Page<Lancamento> buscarPorFuncionarioId(Long funcionarioId, PageRequest pageRequest) {
 		log.info("Buscando lançamentos para o funcionário ID {}", funcionarioId);
 		return this.lancamentoRepository.findByFuncionarioId(funcionarioId, pageRequest);
+	}
+	
+	public List<Lancamento> buscarLancamentosPorFuncionarioId(Long funcionarioId) {
+		log.info("Buscando lançamentos para o funcionário ID {}", funcionarioId);
+		return this.lancamentoRepository.findEntriesByFuncionarioId(funcionarioId);
 	}
 	
 	@Cacheable("lancamentoPorId")//anotação para criação e configuração do cache, que esta no arquivo ehcach.xml

@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.hibernate.validator.constraints.ISBN;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +88,7 @@ public class FuncionarioController {
 	/**
 	 * Retorna todos funcionários por empresaId.
 	 * 
-	 * @param id
+	 * @param companyId
 	 * @return ResponseEntity<Response<FuncionarioDto>>
 	 */
 	@GetMapping()
@@ -263,6 +262,7 @@ public class FuncionarioController {
 		FuncionarioDto funcionarioDto = new FuncionarioDto();
 		funcionarioDto.setId(funcionario.getId());
 		funcionarioDto.setNome(funcionario.getNome());
+		funcionarioDto.setEmail(funcionario.getEmail());
 //		funcionario.getQtdHorasAlmocoOpt().ifPresent(
 //				qtdHorasAlmoco -> funcionarioDto.setQtdHorasAlmoco(Optional.of(Float.toString(qtdHorasAlmoco))));
 //		funcionario.getQtdHorasTrabalhoDiaOpt().ifPresent(

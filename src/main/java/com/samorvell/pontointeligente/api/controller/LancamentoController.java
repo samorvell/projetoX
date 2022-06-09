@@ -2,6 +2,9 @@ package com.samorvell.pontointeligente.api.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -80,11 +83,17 @@ public class LancamentoController {
 		Page<LancamentoDto> lancamentosDto = lancamentos.map(lancamento -> this.converterLancamentoDto(lancamento));
 		Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(funcionarioId);
 
-		var copmpId = funcionario.get().getEmpresaId();
 
-		if (lancamentos.isEmpty() || companyId != copmpId) {
+		if (lancamentos.isEmpty()) {
 			log.info("Lançamento não encontrado para o ID: {}", funcionarioId);
 			response.getErrors().add("Lançamento não encontrado para o id " + funcionarioId);
+			return ResponseEntity.badRequest().body(response);
+		}
+		
+		var copmpId = funcionario.get().getEmpresaId();
+		if (companyId != copmpId) {
+			log.info("Empresa id do funcionario é diferente do empresa id pesquisado: {}", companyId);
+			response.getErrors().add("Empresa id do funcionario é diferente do empresa id pesquisado: " + companyId);
 			return ResponseEntity.badRequest().body(response);
 		}
 
@@ -115,6 +124,70 @@ public class LancamentoController {
 		
 		return ResponseEntity.ok(response);
 	}
+	
+	/**
+	 * Retorna soma dos lançamentos.
+	 * 
+	 * @param id
+	 * @return ResponseEntity<Response<LancamentoDto>>
+	 */
+	@GetMapping(value = "/sumentries/{funcionarioId}")
+	public ResponseEntity<Response<Page<LancamentoDto>>> sumEntriesById(@PathVariable("funcionarioId") Long funcionarioId,
+			@RequestParam(value = "pag", defaultValue = "0") int pag,
+			@RequestParam(value = "ord", defaultValue = "id") String ord,
+			@RequestParam(value = "dir", defaultValue = "DESC") String dir,
+			@RequestHeader(value = "companyId", required = true) Long companyId)  {
+		log.info("Buscando lançamentos por ID do funcionário: {}, página: {}", funcionarioId, pag);
+		Response<Page<LancamentoDto>> response = new Response<Page<LancamentoDto>>();
+		PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
+
+		List <Lancamento> lancamentos = this.lancamentoService.buscarLancamentosPorFuncionarioId(funcionarioId);
+		//Page<LancamentoDto> lancamentosDto = lancamentos.map(lancamento -> this.converterLancamentoDto(lancamento));
+		Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(funcionarioId);
+
+		
+		var novoteste = lancamentos.get(0).getData().toString().substring(0, 19);
+		var iniInterval = lancamentos.get(1).getData().toString();
+		var entrace = lancamentos.get(0).getData().toString().substring(11, 16);
+		var exit = lancamentos.get(3).getData().toString().substring(11, 16);
+		
+		var timedate = LocalDateTime.parse(novoteste);
+		
+		var entryTime = LocalTime.parse(entrace).getHour();
+		var exitTime = LocalTime.parse(exit).getHour();
+		
+		
+		
+		 
+		var soma = exitTime -entryTime;
+		
+		System.out.println("timedate: "+ timedate);
+		System.out.println("novo teste: "+ novoteste);
+		
+		System.out.println("intervalo: "+iniInterval);
+
+		System.out.println("Hora entrada: "+ entryTime);		
+		System.out.println("Hora saida: "+ exitTime);
+		System.out.println("");
+
+			
+		
+		if (lancamentos.isEmpty()) {
+			log.info("Lançamento não encontrado para o ID: {}", funcionarioId);
+			response.getErrors().add("Lançamento não encontrado para o id " + funcionarioId);
+			return ResponseEntity.badRequest().body(response);
+		}
+		var copmpId = funcionario.get().getEmpresaId();
+		if (companyId != copmpId) {
+			log.info("Empresa id do funcionario é diferente do empresa id pesquisado: {}", companyId);
+			response.getErrors().add("Empresa id do funcionario é diferente do empresa id pesquisado: " + companyId);
+			return ResponseEntity.badRequest().body(response);
+		}
+
+		//response.setData(lancamentosDto);
+		return ResponseEntity.ok(response);
+	}
+	
 
 	/**
 	 * Adiciona um novo lançamento.
@@ -222,6 +295,7 @@ public class LancamentoController {
 	private LancamentoDto converterLancamentoDto(Lancamento lancamento) {
 		LancamentoDto lancamentoDto = new LancamentoDto();
 		lancamentoDto.setId(Optional.of(lancamento.getId()));
+		//lancamentoDto.setData(lancamento.getData());
 		lancamentoDto.setData(this.dateFormat.format(lancamento.getData()));
 		lancamentoDto.setTipo(lancamento.getTipo().toString());
 		lancamentoDto.setDescricao(lancamento.getDescricao());
@@ -258,6 +332,7 @@ public class LancamentoController {
 		lancamento.setDescricao(lancamentoDto.getDescricao());
 		lancamento.setLocalizacao(lancamentoDto.getLocalizacao());
 		lancamento.setData(this.dateFormat.parse(lancamentoDto.getData()));
+		//lancamento.setData(lancamentoDto.getData());
 
 		if (EnumUtils.isValidEnum(TipoEnum.class, lancamentoDto.getTipo())) {
 			lancamento.setTipo(TipoEnum.valueOf(lancamentoDto.getTipo()));

@@ -5,6 +5,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Date;
 import java.util.Optional;
 
@@ -107,6 +109,7 @@ public class LancamentoControllerTest {
 		LancamentoDto lancamentoDto = new LancamentoDto();
 		lancamentoDto.setId(null);
 		lancamentoDto.setData(this.dateFormat.format(DATA));
+		//lancamentoDto.setData(DATA);
 		lancamentoDto.setTipo(TIPO);
 		lancamentoDto.setFuncionarioId(ID_FUNCIONARIO);
 		ObjectMapper mapper = new ObjectMapper();

@@ -1,5 +1,6 @@
 package com.samorvell.pontointeligente.api.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -42,5 +43,7 @@ public interface LancamentoService {
 	 * @param id
 	 */
 	void remover(Long id);
+
+	List<Lancamento> buscarLancamentosPorFuncionarioId(Long funcionarioId);
 
 }
