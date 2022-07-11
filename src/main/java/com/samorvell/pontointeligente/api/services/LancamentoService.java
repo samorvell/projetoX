@@ -46,4 +46,13 @@ public interface LancamentoService {
 
 	List<Lancamento> buscarLancamentosPorFuncionarioId(Long funcionarioId);
 
+
+	/**
+	 * Persiste espeslho de ponto na base de dados.
+	 *
+	 * @param lancamentos
+	 * @return Lancamento
+	 */
+
+	List<Lancamento> saveMirroPointById(List<Lancamento> lancamentos);
 }

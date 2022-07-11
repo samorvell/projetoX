@@ -1,8 +1,11 @@
 package com.samorvell.pontointeligente.api.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import com.samorvell.pontointeligente.api.model.Periodo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +37,8 @@ public class LancamentoServiceImpl implements LancamentoService {
 		log.info("Buscando lançamentos para o funcionário ID {}", funcionarioId);
 		return this.lancamentoRepository.findEntriesByFuncionarioId(funcionarioId);
 	}
-	
+
+
 	@Cacheable("lancamentoPorId")//anotação para criação e configuração do cache, que esta no arquivo ehcach.xml
 	public Optional<Lancamento> buscarPorId(Long id) {
 		log.info("Buscando um lançamento pelo ID {}", id);
@@ -51,4 +55,56 @@ public class LancamentoServiceImpl implements LancamentoService {
 		log.info("Removendo o lançamento ID {}", id);
 		this.lancamentoRepository.deleteById(id);
 	}
+
+
+
+	@CachePut("lancamentoPorId")//sempre que houver atualização no dado principal, é tbm autalizado no chache
+	public List<Lancamento> saveMirroPointById( List<Lancamento> lancamentos) {
+
+		Map<String, Periodo> periodMap = new HashMap<>();
+
+		for (Lancamento element : lancamentos) {
+
+			var tipo = element.getTipo();
+			var isAlmoco = tipo.toString().contains("ALMOCO");
+			var isTrabalho = tipo.toString().contains("TRABALHO");
+			var isTermino = tipo.toString().contains("TERMINO");
+			var isInicio = tipo.toString().contains("INICIO");
+			var key = isAlmoco ? "ALMOCO" : isTrabalho ? "TRABALHO" : " ";
+
+			if (periodMap.containsKey(key)) {
+
+				var periodo = periodMap.get(key);
+				if (isInicio) {
+					periodo.setRelaeseInitial(element);
+					System.out.println("entrada chave trabalho: " + periodo.getRelaeseInitial());
+				} else {
+					periodo.setReleaseFinal(element);
+					var teste = periodo.gethourInterval();
+					System.out.println("intervalo? " + teste);
+				}
+			} else {
+				var periodo = new Periodo();
+				periodo.setType(key);
+				if (isInicio) {
+					periodo.setRelaeseInitial(element);
+
+				} else {
+					periodo.setReleaseFinal(element);
+					var enterHour = periodo.getRelaeseInitial();
+					var enterSend = periodo.gethourInterval();
+					System.out.println("Hora de entrada trabalho: "+ enterHour);
+					System.out.println("segunda entrada pq a primeira estava vazia: " + enterSend);
+				}
+				periodMap.put(key, periodo);
+			}
+		}
+
+
+		//log.info("Persistindo o lançamento: {}", lancamentos);
+		//this.lancamentoRepository.saveMirroPoint((Lancamento) lancamentos);
+		return (lancamentos); //
+	}
+
+
 }

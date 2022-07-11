@@ -18,11 +18,12 @@ import com.samorvell.pontointeligente.api.model.Lancamento;
 		@NamedQuery(name = "LancamentoRepository.findByFuncionarioId", 
 				query = "SELECT lanc FROM Lancamento lanc WHERE lanc.funcionario.id = :funcionarioId") })
 @NamedQuery(name = "LancamentoRepository.findEntriesByFuncionarioId", 
-query = "SELECT lanc FROM Lancamento lanc WHERE lanc.funcionario.id = :funcionarioId") 
+query = "SELECT lanc FROM Lancamento lanc WHERE lanc.funcionario.id = :funcionarioId")
 public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 
 	List<Lancamento> findEntriesByFuncionarioId(@Param("funcionarioId") Long funcionarioId);
 
 	Page<Lancamento> findByFuncionarioId(@Param("funcionarioId") Long funcionarioId, Pageable pageable);
-	
+
+	//List<Lancamento> saveMirroPoint(Lancamento lancamento);
 }
