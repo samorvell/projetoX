@@ -1,12 +1,16 @@
 package com.samorvell.pontointeligente.api.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.samorvell.pontointeligente.api.model.PointMirror;
+import com.samorvell.pontointeligente.api.services.PointMirrorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -44,5 +48,10 @@ public class LancamentoServiceImpl implements LancamentoService {
 	public void remover(Long id) {
 		log.info("Removendo o lançamento ID {}", id);
 		this.lancamentoRepository.deleteById(id);
+	}
+
+	@Override
+	public Optional<Lancamento> buscarLancamentosPorFuncionarioId(Long funcionarioId) {
+		return this.lancamentoRepository.findEntriesByFuncionarioId(funcionarioId);
 	}
 }

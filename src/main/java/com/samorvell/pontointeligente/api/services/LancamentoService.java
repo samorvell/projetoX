@@ -43,4 +43,6 @@ public interface LancamentoService {
 	 */
 	void remover(Long id);
 
+	Optional<Lancamento> buscarLancamentosPorFuncionarioId(Long funcionarioId);
+
 }
