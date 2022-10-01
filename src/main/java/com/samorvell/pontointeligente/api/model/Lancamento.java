@@ -1,6 +1,7 @@
 package com.samorvell.pontointeligente.api.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -30,11 +31,11 @@ public class Lancamento implements Serializable {
 	private static final long serialVersionUID = 6524560251526772839L;
 
 	private Long id;
-	private Date data;
+	private LocalDateTime data;
 	private String descricao;
 	private String localizacao;
-	private Date dataCriacao;
-	private Date dataAtualizacao;
+	private LocalDateTime dataCriacao;
+	private LocalDateTime dataAtualizacao;
 	private TipoEnum tipo;
 	private Funcionario funcionario;
 
@@ -51,13 +52,13 @@ public class Lancamento implements Serializable {
 		this.id = id;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
+	//@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data", nullable = false)
-	public Date getData() {
+	public LocalDateTime getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
+	public void setData(LocalDateTime data) {
 		this.data = data;
 	}
 
@@ -80,20 +81,20 @@ public class Lancamento implements Serializable {
 	}
 
 	@Column(name = "data_criacao", nullable = false)
-	public Date getDataCriacao() {
+	public LocalDateTime getDataCriacao() {
 		return dataCriacao;
 	}
 
-	public void setDataCriacao(Date dataCriacao) {
+	public void setDataCriacao(LocalDateTime dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
 
 	@Column(name = "data_atualizacao", nullable = false)
-	public Date getDataAtualizacao() {
+	public LocalDateTime getDataAtualizacao() {
 		return dataAtualizacao;
 	}
 
-	public void setDataAtualizacao(Date dataAtualizacao) {
+	public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
 		this.dataAtualizacao = dataAtualizacao;
 	}
 
@@ -118,12 +119,12 @@ public class Lancamento implements Serializable {
 
 	@PreUpdate
 	public void preUpdate() {
-		dataAtualizacao = new Date();
+		dataAtualizacao = LocalDateTime.now();
 	}
 
 	@PrePersist
 	public void prePersist() {
-		final Date atual = new Date();
+		final LocalDateTime atual = LocalDateTime.now();
 		dataCriacao = atual;
 		dataAtualizacao = atual;
 	}

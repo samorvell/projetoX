@@ -56,8 +56,6 @@ public class CadastroPJController {
 		Response<CadastroPJDto> response = new Response<CadastroPJDto>();
 
 		validarDadosExistentes(cadastroPJDto, result);
-		Empresa empresa = this.converterDtoParaEmpresa(cadastroPJDto);
-		Funcionario funcionario = this.converterDtoParaFuncionario(cadastroPJDto, result);
 
 		if (result.hasErrors()) {
 			log.error("Erro validando dados de cadastro PJ: {}", result.getAllErrors());
@@ -65,8 +63,13 @@ public class CadastroPJController {
 			return ResponseEntity.badRequest().body(response);
 		}
 
+		Empresa empresa = this.converterDtoParaEmpresa(cadastroPJDto);
+
 		this.empresaService.persistir(empresa);
+		Funcionario funcionario = this.converterDtoParaFuncionario(cadastroPJDto, result);
 		funcionario.setEmpresa(empresa);
+		var teste = funcionario.getEmpresa().getId();
+		System.out.println(teste);
 		this.funcionarioService.persistir(funcionario);
 
 		response.setData(this.converterCadastroPJDto(funcionario));
@@ -120,6 +123,7 @@ public class CadastroPJController {
 		funcionario.setCpf(cadastroPJDto.getCpf());
 		funcionario.setPerfil(PerfilEnum.ROLE_ADMIN);
 		funcionario.setSenha(PasswordUtils.gerarBCrypt(cadastroPJDto.getSenha()));
+
 
 		return funcionario;
 	}

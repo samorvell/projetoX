@@ -1,6 +1,7 @@
 package com.samorvell.pontointeligente.api.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -22,18 +23,16 @@ import lombok.ToString;
 @Entity
 @Table(name = "empresa")
 public class Empresa implements Serializable {
-	
-	
 
 		private static final long serialVersionUID = 3960436649365666213L;
-		
+
 		private Long id;
 		private String razaoSocial;
 		private String cnpj;
-		private Date dataCriacao;
-		private Date dataAtualizacao;
+		private LocalDateTime dataCriacao;
+		private LocalDateTime dataAtualizacao;
 		private List<Funcionario> funcionarios;
-		
+
 		public Empresa() {
 		}
 
@@ -66,20 +65,20 @@ public class Empresa implements Serializable {
 		}
 
 		@Column(name = "data_criacao", nullable = false)
-		public Date getDataCriacao() {
+		public LocalDateTime getDataCriacao() {
 			return dataCriacao;
 		}
 
-		public void setDataCriacao(Date dataCriacao) {
+		public void setDataCriacao(LocalDateTime dataCriacao) {
 			this.dataCriacao = dataCriacao;
 		}
 
 		@Column(name = "data_atualizacao", nullable = false)
-		public Date getDataAtualizacao() {
+		public LocalDateTime getDataAtualizacao() {
 			return dataAtualizacao;
 		}
 
-		public void setDataAtualizacao(Date dataAtualizacao) {
+		public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
 			this.dataAtualizacao = dataAtualizacao;
 		}
 
@@ -91,19 +90,19 @@ public class Empresa implements Serializable {
 		public void setFuncionarios(List<Funcionario> funcionarios) {
 			this.funcionarios = funcionarios;
 		}
-		
+
 		@PreUpdate
 	    public void preUpdate() {
-	        dataAtualizacao = new Date();
+	        dataAtualizacao = LocalDateTime.now();
 	    }
-	     
+
 	    @PrePersist
 	    public void prePersist() {
-	        final Date atual = new Date();
+	        final LocalDateTime atual = LocalDateTime.now();
 	        dataCriacao = atual;
 	        dataAtualizacao = atual;
 	    }
 
-		
+
 
 }

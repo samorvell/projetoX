@@ -36,7 +36,6 @@ public class FuncionarioDto {
 	private Optional<String> qtdHorasTrabalhoDia = Optional.empty();
 	private Optional<String> qtdHorasAlmoco = Optional.empty();
 	private Long empresaId;
-	
 
 
 	public Long getId() {
@@ -100,19 +99,12 @@ public class FuncionarioDto {
 		this.qtdHorasAlmoco = qtdHorasAlmoco;
 	}
 
-	public void setNameEmpresa(String razaoSocial) {
-		// TODO Auto-generated method stub
-		
+	public Long getEmpresaId() {
+		return empresaId;
 	}
 
-	public void setEmpresaId(Long id2) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setPerfil(PerfilEnum perfil2) {
-		// TODO Auto-generated method stub
-		
+	public void setEmpresaId(Long empresaId) {
+		this.empresaId = empresaId;
 	}
 
 

@@ -2,6 +2,8 @@ package com.samorvell.pontointeligente.api.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -45,7 +47,8 @@ import com.samorvell.pontointeligente.api.services.LancamentoService;
 public class LancamentoController {
 
 	private static final Logger log = LoggerFactory.getLogger(LancamentoController.class);
-	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	//private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	@Autowired
 	private LancamentoService lancamentoService;
@@ -84,7 +87,7 @@ public class LancamentoController {
 		Page<LancamentoDto> lancamentosDto = lancamentos.map(lancamento -> this.converterLancamentoDto(lancamento));
 		Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(funcionarioId);
 
-		var copmpId = funcionario.get().getEmpresaId();
+		var copmpId = funcionario.get().getEmpresa().getId();
 		// System.out.println("paramentro empresa Id: " + companyId);
 		// System.out.println("buscando empresa Id, pelo funcionario; " + empId);
 
@@ -125,7 +128,7 @@ public class LancamentoController {
 	/**
 	 * Adiciona um novo lançamento.
 	 * 
-	 * @param lancamento
+	 * @param
 	 * @param result
 	 * @return ResponseEntity<Response<LancamentoDto>>
 	 * @throws ParseException
@@ -263,7 +266,8 @@ public class LancamentoController {
 
 		lancamento.setDescricao(lancamentoDto.getDescricao());
 		lancamento.setLocalizacao(lancamentoDto.getLocalizacao());
-		lancamento.setData(this.dateFormat.parse(lancamentoDto.getData()));
+		lancamento.setData((LocalDateTime) this.dateFormat.parse(lancamentoDto.getData()));
+		//lancamento.setData(this.dateFormat.parse(lancamentoDto.getData()));
 
 		if (EnumUtils.isValidEnum(TipoEnum.class, lancamentoDto.getTipo())) {
 			lancamento.setTipo(TipoEnum.valueOf(lancamentoDto.getTipo()));

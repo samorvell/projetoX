@@ -96,7 +96,7 @@ public class FuncionarioController {
 		log.info("Buscando funcionário por ID: {}", id);
 		Response<FuncionarioDto> response = new Response<FuncionarioDto>();
 		Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(id);
-		var copmpId = funcionario.get().getEmpresaId();
+		var copmpId = funcionario.get().getEmpresa().getId();
 
 		if (!funcionario.isPresent()|| companyId != copmpId ) {
 			log.info("Funcionário não encontrado para o ID: {}", id);

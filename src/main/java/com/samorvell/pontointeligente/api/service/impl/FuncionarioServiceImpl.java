@@ -23,6 +23,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	private FuncionarioRepository funcionarioRepository;
 	
 	public Funcionario persistir(Funcionario funcionario) {
+		var companyId = funcionario.getEmpresa().getId();
 		log.info("Persistindo funcionário: {}", funcionario);
 		return this.funcionarioRepository.save(funcionario);
 	}

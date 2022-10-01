@@ -66,7 +66,7 @@ public class PointMirrorController {
 
         Optional<Lancamento> launch = this.lancamentoService.buscarLancamentosPorFuncionarioId(funcionarioId);
         Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(funcionarioId);
-        var compId = funcionario.get().getEmpresaId();
+        var compId = funcionario.get().getEmpresa().getId();
 
         if (launch.isEmpty()) {
             log.info("Lançamento não encontrado para o ID: {}", funcionarioId);

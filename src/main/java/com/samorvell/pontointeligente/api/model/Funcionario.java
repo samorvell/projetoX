@@ -2,6 +2,7 @@ package com.samorvell.pontointeligente.api.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +39,6 @@ public class Funcionario implements Serializable {
 	private static final long serialVersionUID = -5754246207015712518L;
 
 	private Long id;
-	private Long empresaId;
 	private String nome;
 	private String email;
 	private String senha;
@@ -47,11 +47,10 @@ public class Funcionario implements Serializable {
 	private Float qtdHorasTrabalhoDia;
 	private Float qtdHorasAlmoco;
 	private PerfilEnum perfil;
-	private Date dataCriacao;
-	private Date dataAtualizacao;
+	private LocalDateTime dataCriacao;
+	private LocalDateTime dataAtualizacao;
 	private Empresa empresa;
 	private List<Lancamento> lancamentos;
-	
 
 	public Funcionario() {
 	}
@@ -147,20 +146,20 @@ public class Funcionario implements Serializable {
 	}
 
 	@Column(name = "data_criacao", nullable = false)
-	public Date getDataCriacao() {
+	public LocalDateTime getDataCriacao() {
 		return dataCriacao;
 	}
 
-	public void setDataCriacao(Date dataCriacao) {
+	public void setDataCriacao(LocalDateTime dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
 
 	@Column(name = "data_atualizacao", nullable = false)
-	public Date getDataAtualizacao() {
+	public LocalDateTime getDataAtualizacao() {
 		return dataAtualizacao;
 	}
 
-	public void setDataAtualizacao(Date dataAtualizacao) {
+	public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
 		this.dataAtualizacao = dataAtualizacao;
 	}
 
@@ -174,8 +173,6 @@ public class Funcionario implements Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumns({
-			@JoinColumn(name = "empresa_id", referencedColumnName = "id", insertable = false, updatable = false) })
 	public Empresa getEmpresa() {
 		return empresa;
 	}
@@ -195,22 +192,13 @@ public class Funcionario implements Serializable {
 
 	@PreUpdate
 	public void preUpdate() {
-		dataAtualizacao = new Date();
+		dataAtualizacao = LocalDateTime.now();
 	}
 
 	@PrePersist
 	public void prePersist() {
-		final Date atual = new Date();
+		final LocalDateTime atual = LocalDateTime.now();
 		dataCriacao = atual;
 		dataAtualizacao = atual;
 	}
-	@Column(name = "empresa_id", nullable = false)
-	public Long getEmpresaId() {
-		return empresaId;
-	}
-
-	public void setEmpresaId(Long empresaId) {
-		this.empresaId = empresaId;
-	}
-
 }
