@@ -10,8 +10,8 @@ import java.time.LocalTime;
 public class PointMirrorDto {
 
     private Long mirrorId;
-    private LocalTime accumulated;
-    private LocalDateTime data;
+    private String accumulated;
+    private String data;
     private String funcionario;
 
 

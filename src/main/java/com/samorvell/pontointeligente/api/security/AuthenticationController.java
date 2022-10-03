@@ -55,6 +55,7 @@ public class AuthenticationController {
 	 * @return ResponseEntity<Response<TokenDto>>
 	 * @throws AuthenticationException
 	 */
+	@CrossOrigin(origins = "*")
 	@PostMapping
 	public ResponseEntity<Response<TokenDto>> gerarTokenJwt(@Valid @RequestBody JwtAuthenticationDto authenticationDto, 
 															//@RequestHeader("companyId") Integer companyId,
@@ -85,6 +86,7 @@ public class AuthenticationController {
 	 * @param request
 	 * @return ResponseEntity<Response<TokenDto>>
 	 */
+	@CrossOrigin(origins = "*")
 	@PostMapping(value = "/refresh")
 	public ResponseEntity<Response<TokenDto>> gerarRefreshTokenJwt(HttpServletRequest request) {
 		log.info("Gerando refresh token JWT.");

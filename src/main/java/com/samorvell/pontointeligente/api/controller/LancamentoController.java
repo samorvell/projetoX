@@ -266,8 +266,7 @@ public class LancamentoController {
 
 		lancamento.setDescricao(lancamentoDto.getDescricao());
 		lancamento.setLocalizacao(lancamentoDto.getLocalizacao());
-		lancamento.setData((LocalDateTime) this.dateFormat.parse(lancamentoDto.getData()));
-		//lancamento.setData(this.dateFormat.parse(lancamentoDto.getData()));
+		lancamento.setData(LocalDateTime.parse(lancamentoDto.getData(), dateFormat));
 
 		if (EnumUtils.isValidEnum(TipoEnum.class, lancamentoDto.getTipo())) {
 			lancamento.setTipo(TipoEnum.valueOf(lancamentoDto.getTipo()));

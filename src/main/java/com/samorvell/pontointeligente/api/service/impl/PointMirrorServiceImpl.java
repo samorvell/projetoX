@@ -126,9 +126,6 @@ public class PointMirrorServiceImpl implements PointMirrorService {
 
 
         }
-
-
-
         log.info("Gravando espelho de ponto: {}", lancamento);
         */
         return (lancamento);

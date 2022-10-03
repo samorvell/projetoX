@@ -89,7 +89,6 @@ public class FuncionarioController {
 	 * @return ResponseEntity<Response<FuncionarioDto>>
 	 */
 	@GetMapping(value = "/funcionario/{id}")
-
 	public ResponseEntity<Response<FuncionarioDto>> buscarPorId(@PathVariable("id") Long id, 
 																@RequestHeader(value = "companyId") Long companyId) {
 
@@ -194,7 +193,7 @@ public class FuncionarioController {
 	private FuncionarioDto converterFuncionarioIdDto(Funcionario funcionario) {
 		FuncionarioDto funcionarioDto = new FuncionarioDto();
 		funcionarioDto.setId(funcionario.getId());
-		//funcionarioDto.setEmail(funcionario.getEmail());
+		funcionarioDto.setEmail(funcionario.getEmail());
 		funcionarioDto.setNome(funcionario.getNome());
 		funcionario.getQtdHorasAlmocoOpt().ifPresent(
 				qtdHorasAlmoco -> funcionarioDto.setQtdHorasAlmoco(Optional.of(Float.toString(qtdHorasAlmoco))));

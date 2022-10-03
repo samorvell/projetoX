@@ -2,6 +2,7 @@ package com.samorvell.pontointeligente.api.security.configuration;
 
 import java.util.Arrays;
 
+import org.apache.catalina.filters.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,6 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 		config.addAllowedOrigin("*");
+		config.setMaxAge(3600L);
+		config.setAllowedOrigins(Arrays.asList("http://localhost:4051","http://localhost:4050"));
 		config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config);
@@ -77,7 +80,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-
 		// Disable CSRF for our Requests
 		httpSecurity.csrf().disable().
 				exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and().sessionManagement()
