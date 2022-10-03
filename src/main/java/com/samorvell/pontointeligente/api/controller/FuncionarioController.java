@@ -34,179 +34,189 @@ import com.samorvell.pontointeligente.api.utils.PasswordUtils;
 @CrossOrigin(origins = "*")
 public class FuncionarioController {
 
-	private static final Logger log = LoggerFactory.getLogger(FuncionarioController.class);
+    private static final Logger log = LoggerFactory.getLogger(FuncionarioController.class);
 
-	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
-	
-	@Autowired
-	private FuncionarioService funcionarioService;
-	
-	private EmpresaService empresaService;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
-	public FuncionarioController() {
-	}
+    @Autowired
+    private FuncionarioService funcionarioService;
 
-	/**
-	 * Atualiza os dados de um funcionário.
-	 * 
-	 * @param id
-	 * @param funcionarioDto
-	 * @param result
-	 * @return ResponseEntity<Response<FuncionarioDto>>
-	 * @throws NoSuchAlgorithmException
-	 */
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<Response<FuncionarioDto>> atualizar(@PathVariable("id") Long id,
-			@Valid @RequestBody FuncionarioDto funcionarioDto, BindingResult result) throws NoSuchAlgorithmException {
-		log.info("Atualizando funcionário: {}", funcionarioDto.toString());
-		Response<FuncionarioDto> response = new Response<FuncionarioDto>();
+    private EmpresaService empresaService;
 
-		Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(id);
-		if (!funcionario.isPresent()) {
-			result.addError(new ObjectError("funcionario", "Funcionário não encontrado."));
-		}
+    public FuncionarioController() {
+    }
 
-		this.atualizarDadosFuncionario(funcionario.get(), funcionarioDto, result);
+    /**
+     * Atualiza os dados de um funcionário.
+     *
+     * @param id
+     * @param funcionarioDto
+     * @param result
+     * @return ResponseEntity<Response < FuncionarioDto>>
+     * @throws NoSuchAlgorithmException
+     */
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Response<FuncionarioDto>> atualizar(@PathVariable("id") Long id,
+                                                              @Valid @RequestBody FuncionarioDto funcionarioDto, BindingResult result) throws NoSuchAlgorithmException {
+        log.info("Atualizando funcionário: {}", funcionarioDto.toString());
+        Response<FuncionarioDto> response = new Response<FuncionarioDto>();
 
-		if (result.hasErrors()) {
-			log.error("Erro validando funcionário: {}", result.getAllErrors());
-			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
-			return ResponseEntity.badRequest().body(response);
-		}
+        Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(id);
+        if (!funcionario.isPresent()) {
+            result.addError(new ObjectError("funcionario", "Funcionário não encontrado."));
+        }
 
-		this.funcionarioService.persistir(funcionario.get());
-		response.setData(this.converterFuncionarioDto(funcionario.get()));
+        this.atualizarDadosFuncionario(funcionario.get(), funcionarioDto, result);
 
-		return ResponseEntity.ok(response);
-	}
-	
-	
-	/**
-	 * Retorna um funcionário por ID.
-	 * buscarPorEmail
-	 * @param id
-	 * @return ResponseEntity<Response<FuncionarioDto>>
-	 */
-	@GetMapping(value = "/funcionario/{id}")
-	public ResponseEntity<Response<FuncionarioDto>> buscarPorId(@PathVariable("id") Long id, 
-																@RequestHeader(value = "companyId") Long companyId) {
+        if (result.hasErrors()) {
+            log.error("Erro validando funcionário: {}", result.getAllErrors());
+            result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
+            return ResponseEntity.badRequest().body(response);
+        }
 
-		log.info("Buscando funcionário por ID: {}", id);
-		Response<FuncionarioDto> response = new Response<FuncionarioDto>();
-		Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(id);
-		var copmpId = funcionario.get().getEmpresa().getId();
+        this.funcionarioService.persistir(funcionario.get());
+        response.setData(this.converterFuncionarioDto(funcionario.get()));
 
-		if (!funcionario.isPresent()|| companyId != copmpId ) {
-			log.info("Funcionário não encontrado para o ID: {}", id);
-			response.getErrors().add("Funcionário não encontrado para o id " + id);
-			return ResponseEntity.badRequest().body(response);
-		}
+        return ResponseEntity.ok(response);
+    }
 
-		response.setData(this.converterFuncionarioIdDto(funcionario.get()));
-		return ResponseEntity.ok(response);
-	}
-	
-	/**
-	 * Retorna um funcionário por EMAIL.
-	 * 
-	 * @param email
-	 * @return ResponseEntity<Response<FuncionarioDto>>
-	 */
-	@GetMapping(value = "/{email}")
-	public ResponseEntity<Response<FuncionarioDto>> buscarPorEmail(@PathVariable("email") String email) {
-		log.info("Buscando funcionário por E-mail: {}", email);
-		Response<FuncionarioDto> response = new Response<FuncionarioDto>();
-		Optional<Funcionario> funcionario = this.funcionarioService.buscarPorEmail(email);
 
-		if (!funcionario.isPresent()) {
-			log.info("Funcionário não encontrado para o e-mail: {}", email);
-			response.getErrors().add("Funcionário não encontrado para o e-mail " + email);
-			return ResponseEntity.badRequest().body(response);
-		}
+    /**
+     * Retorna um funcionário por ID.
+     * buscarPorEmail
+     *
+     * @param id
+     * @return ResponseEntity<Response < FuncionarioDto>>
+     */
+    @GetMapping(value = "/funcionario/{id}")
+    public ResponseEntity<Response<FuncionarioDto>> buscarPorId(@PathVariable("id") Long id,
+                                                                @RequestHeader(value = "companyId") Long companyId) {
 
-		response.setData(this.converterFuncionarioIdDto(funcionario.get()));
-		return ResponseEntity.ok(response);
-	}
+        log.info("Buscando funcionário por ID: {}", id);
+        Response<FuncionarioDto> response = new Response<FuncionarioDto>();
+        Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(id);
+        var copmpId = funcionario.get().getEmpresa().getId();
 
-	/**
-	 * Atualiza os dados do funcionário com base nos dados encontrados no DTO.
-	 * 
-	 * @param funcionario
-	 * @param funcionarioDto
-	 * @param result
-	 * @throws NoSuchAlgorithmException
-	 */
-	private void atualizarDadosFuncionario(Funcionario funcionario, FuncionarioDto funcionarioDto, BindingResult result)
-			throws NoSuchAlgorithmException {
-		funcionario.setNome(funcionarioDto.getNome());
+        if (!funcionario.isPresent()) {
+            log.info("Funcionário não encontrado para o ID: {}", id);
+            response.getErrors().add("Funcionário não encontrado para o id " + id);
+            return ResponseEntity.badRequest().body(response);
+        } else {
 
-		if (!funcionario.getEmail().equals(funcionarioDto.getEmail())) {
-			this.funcionarioService.buscarPorEmail(funcionarioDto.getEmail())
-					.ifPresent(func -> result.addError(new ObjectError("email", "Email já existente.")));
-			funcionario.setEmail(funcionarioDto.getEmail());
-		}
+            if (companyId != copmpId) {
 
-		funcionario.setQtdHorasAlmoco(null);
-		funcionarioDto.getQtdHorasAlmoco()
-				.ifPresent(qtdHorasAlmoco -> funcionario.setQtdHorasAlmoco(Float.valueOf(qtdHorasAlmoco)));
+                log.info("EmpresaId origem divergente do empresaId destino: {}", companyId);
+                response.getErrors().add("Empresa com id " + companyId + " consultando funcionario com empresaId:"+ copmpId);
+                return ResponseEntity.badRequest().body(response);
+            }
+        }
 
-		funcionario.setQtdHorasTrabalhoDia(null);
-		funcionarioDto.getQtdHorasTrabalhoDia()
-				.ifPresent(qtdHorasTrabDia -> funcionario.setQtdHorasTrabalhoDia(Float.valueOf(qtdHorasTrabDia)));
 
-		funcionario.setValorHora(null);
-		funcionarioDto.getValorHora().ifPresent(valorHora -> funcionario.setValorHora(new BigDecimal(valorHora)));
+        response.setData(this.converterFuncionarioIdDto(funcionario.get()));
+        return ResponseEntity.ok(response);
+    }
 
-		if (funcionarioDto.getSenha().isPresent()) {
-			funcionario.setSenha(PasswordUtils.gerarBCrypt(funcionarioDto.getSenha().get()));
-		}
-	}
+    /**
+     * Retorna um funcionário por EMAIL.
+     *
+     * @param email
+     * @return ResponseEntity<Response < FuncionarioDto>>
+     */
+    @GetMapping(value = "/{email}")
+    public ResponseEntity<Response<FuncionarioDto>> buscarPorEmail(@PathVariable("email") String email) {
+        log.info("Buscando funcionário por E-mail: {}", email);
+        Response<FuncionarioDto> response = new Response<FuncionarioDto>();
+        Optional<Funcionario> funcionario = this.funcionarioService.buscarPorEmail(email);
 
-	/**
-	 * Retorna um DTO com os dados de um funcionário.
-	 * 
-	 * @param funcionario
-	 * @return FuncionarioDto
-	 */
-	private FuncionarioDto converterFuncionarioDto(Funcionario funcionario) {
-		FuncionarioDto funcionarioDto = new FuncionarioDto();
-		funcionarioDto.setId(funcionario.getId());
-		funcionarioDto.setEmail(funcionario.getEmail());
-		funcionarioDto.setNome(funcionario.getNome());
-		funcionario.getQtdHorasAlmocoOpt().ifPresent(
-				qtdHorasAlmoco -> funcionarioDto.setQtdHorasAlmoco(Optional.of(Float.toString(qtdHorasAlmoco))));
-		funcionario.getQtdHorasTrabalhoDiaOpt().ifPresent(
-				qtdHorasTrabDia -> funcionarioDto.setQtdHorasTrabalhoDia(Optional.of(Float.toString(qtdHorasTrabDia))));
-		funcionario.getValorHoraOpt()
-				.ifPresent(valorHora -> funcionarioDto.setValorHora(Optional.of(valorHora.toString())));
+        if (!funcionario.isPresent()) {
+            log.info("Funcionário não encontrado para o e-mail: {}", email);
+            response.getErrors().add("Funcionário não encontrado para o e-mail " + email);
+            return ResponseEntity.badRequest().body(response);
+        }
 
-		return funcionarioDto;
-	}
-	
-	/**
-	 * Retorna um DTO com os dados de um funcionário.
-	 * 
-	 * @param funcionario
-	 * @return FuncionarioDto
-	 */
-	private FuncionarioDto converterFuncionarioIdDto(Funcionario funcionario) {
-		FuncionarioDto funcionarioDto = new FuncionarioDto();
-		funcionarioDto.setId(funcionario.getId());
-		funcionarioDto.setEmail(funcionario.getEmail());
-		funcionarioDto.setNome(funcionario.getNome());
-		funcionario.getQtdHorasAlmocoOpt().ifPresent(
-				qtdHorasAlmoco -> funcionarioDto.setQtdHorasAlmoco(Optional.of(Float.toString(qtdHorasAlmoco))));
-		funcionario.getQtdHorasTrabalhoDiaOpt().ifPresent(
-				qtdHorasTrabDia -> funcionarioDto.setQtdHorasTrabalhoDia(Optional.of(Float.toString(qtdHorasTrabDia))));
-		funcionario.getValorHoraOpt()
-				.ifPresent(valorHora -> funcionarioDto.setValorHora(Optional.of(valorHora.toString())));
-		funcionarioDto.setNameEmpresa(funcionario.getEmpresa().getRazaoSocial());
-		funcionarioDto.setEmpresaId(funcionario.getEmpresa().getId());
-		funcionarioDto.setPerfil(funcionario.getPerfil());
+        response.setData(this.converterFuncionarioIdDto(funcionario.get()));
+        return ResponseEntity.ok(response);
+    }
 
-		return funcionarioDto;
-	}
-	
+    /**
+     * Atualiza os dados do funcionário com base nos dados encontrados no DTO.
+     *
+     * @param funcionario
+     * @param funcionarioDto
+     * @param result
+     * @throws NoSuchAlgorithmException
+     */
+    private void atualizarDadosFuncionario(Funcionario funcionario, FuncionarioDto funcionarioDto, BindingResult result)
+            throws NoSuchAlgorithmException {
+        funcionario.setNome(funcionarioDto.getNome());
+
+        if (!funcionario.getEmail().equals(funcionarioDto.getEmail())) {
+            this.funcionarioService.buscarPorEmail(funcionarioDto.getEmail())
+                    .ifPresent(func -> result.addError(new ObjectError("email", "Email já existente.")));
+            funcionario.setEmail(funcionarioDto.getEmail());
+        }
+
+        funcionario.setQtdHorasAlmoco(null);
+        funcionarioDto.getQtdHorasAlmoco()
+                .ifPresent(qtdHorasAlmoco -> funcionario.setQtdHorasAlmoco(Float.valueOf(qtdHorasAlmoco)));
+
+        funcionario.setQtdHorasTrabalhoDia(null);
+        funcionarioDto.getQtdHorasTrabalhoDia()
+                .ifPresent(qtdHorasTrabDia -> funcionario.setQtdHorasTrabalhoDia(Float.valueOf(qtdHorasTrabDia)));
+
+        funcionario.setValorHora(null);
+        funcionarioDto.getValorHora().ifPresent(valorHora -> funcionario.setValorHora(new BigDecimal(valorHora)));
+
+        if (funcionarioDto.getSenha().isPresent()) {
+            funcionario.setSenha(PasswordUtils.gerarBCrypt(funcionarioDto.getSenha().get()));
+        }
+    }
+
+    /**
+     * Retorna um DTO com os dados de um funcionário.
+     *
+     * @param funcionario
+     * @return FuncionarioDto
+     */
+    private FuncionarioDto converterFuncionarioDto(Funcionario funcionario) {
+        FuncionarioDto funcionarioDto = new FuncionarioDto();
+        funcionarioDto.setId(funcionario.getId());
+        funcionarioDto.setEmail(funcionario.getEmail());
+        funcionarioDto.setNome(funcionario.getNome());
+        funcionario.getQtdHorasAlmocoOpt().ifPresent(
+                qtdHorasAlmoco -> funcionarioDto.setQtdHorasAlmoco(Optional.of(Float.toString(qtdHorasAlmoco))));
+        funcionario.getQtdHorasTrabalhoDiaOpt().ifPresent(
+                qtdHorasTrabDia -> funcionarioDto.setQtdHorasTrabalhoDia(Optional.of(Float.toString(qtdHorasTrabDia))));
+        funcionario.getValorHoraOpt()
+                .ifPresent(valorHora -> funcionarioDto.setValorHora(Optional.of(valorHora.toString())));
+
+        return funcionarioDto;
+    }
+
+    /**
+     * Retorna um DTO com os dados de um funcionário.
+     *
+     * @param funcionario
+     * @return FuncionarioDto
+     */
+    private FuncionarioDto converterFuncionarioIdDto(Funcionario funcionario) {
+        FuncionarioDto funcionarioDto = new FuncionarioDto();
+        funcionarioDto.setId(funcionario.getId());
+        funcionarioDto.setEmail(funcionario.getEmail());
+        funcionarioDto.setNome(funcionario.getNome());
+        funcionario.getQtdHorasAlmocoOpt().ifPresent(
+                qtdHorasAlmoco -> funcionarioDto.setQtdHorasAlmoco(Optional.of(Float.toString(qtdHorasAlmoco))));
+        funcionario.getQtdHorasTrabalhoDiaOpt().ifPresent(
+                qtdHorasTrabDia -> funcionarioDto.setQtdHorasTrabalhoDia(Optional.of(Float.toString(qtdHorasTrabDia))));
+        funcionario.getValorHoraOpt()
+                .ifPresent(valorHora -> funcionarioDto.setValorHora(Optional.of(valorHora.toString())));
+        funcionarioDto.setNameEmpresa(funcionario.getEmpresa().getRazaoSocial());
+        funcionarioDto.setEmpresaId(funcionario.getEmpresa().getId());
+        funcionarioDto.setPerfil(funcionario.getPerfil());
+
+        return funcionarioDto;
+    }
+
 
 }

@@ -2,6 +2,7 @@ package com.samorvell.pontointeligente.api.service.impl;
 
 
 import com.samorvell.pontointeligente.api.enums.TipoEnum;
+import com.samorvell.pontointeligente.api.model.Funcionario;
 import com.samorvell.pontointeligente.api.model.Lancamento;
 import com.samorvell.pontointeligente.api.model.PointMirror;
 import com.samorvell.pontointeligente.api.repository.FuncionarioRepository;
@@ -32,34 +33,8 @@ public class PointMirrorServiceImpl implements PointMirrorService {
     @Autowired
     private PointMirrorRepository pointMirrorRepository;
 
-    @Override
-    public Page<PointMirror> findPointMirrorByFuncionarioId(Long funcionarioId, PageRequest pageRequest) {
-        return null;
-    }
-
     @Autowired
-    private Optional<FuncionarioRepository> funcionarioRepository;
-
-    @Override
-    public Optional<PointMirror> buscarPorMirrorId(Long mirrorId) {
-        return Optional.empty();
-    }
-
-    @Override
-    public PointMirror persistir(PointMirror pointMirror) {
-        return null;
-    }
-
-    /*@Override
-    public void remover(Long mirrorId) {
-
-    }*/
-
-   /* @Override
-    public List<PointMirror> findPointMirrorByFuncionarioId(Long funcionarioId) {
-        return null;
-    }*/
-
+    private FuncionarioRepository funcionarioRepository;
 
     @CachePut("mirrorPointPorId")//sempre que houver atualização no dado principal, é tbm autalizado no chache
     public List<Lancamento> saveMirrorPointById(List<Lancamento> lancamento, Long funcionarioId) {

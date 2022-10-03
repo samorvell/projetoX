@@ -202,7 +202,7 @@ public class Funcionario implements Serializable {
 		dataAtualizacao = atual;
 	}
 
-	@Override
+	/*@Override
 	public String toString() {
 		return "Funcionario{" +
 				"id=" + id +
@@ -219,5 +219,5 @@ public class Funcionario implements Serializable {
 				", empresa=" + empresa +
 				", lancamentos=" + lancamentos +
 				'}';
-	}
+	}*/
 }

@@ -20,7 +20,7 @@ public interface PointMirrorService {
      * @param pageRequest
      * @return Page<PointMirror>
      */
-    Page<PointMirror> findPointMirrorByFuncionarioId(Long funcionarioId, PageRequest pageRequest);
+   // Page<PointMirror> findPointMirrorByFuncionarioId(Long funcionarioId, PageRequest pageRequest);
 
     /**
      * Retorna um PointMirror por ID.
@@ -28,7 +28,7 @@ public interface PointMirrorService {
      * @param mirrorId
      * @return Optional<PointMirror>
      */
-    Optional<PointMirror> buscarPorMirrorId(Long mirrorId);
+    //Optional<PointMirror> buscarPorMirrorId(Long mirrorId);
 
     /**
      * Persiste um lançamento na base de dados.
@@ -36,7 +36,7 @@ public interface PointMirrorService {
      * @param pointMirror
      * @return pointMirror
      */
-    PointMirror persistir(PointMirror pointMirror);
+   // PointMirror persistir(PointMirror pointMirror);
 
     /**
      * Remove um lançamento da base de dados.

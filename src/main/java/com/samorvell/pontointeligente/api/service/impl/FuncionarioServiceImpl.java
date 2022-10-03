@@ -15,9 +15,6 @@ import com.samorvell.pontointeligente.api.services.FuncionarioService;
 public class FuncionarioServiceImpl implements FuncionarioService {
 	
 	private static final Logger log = LoggerFactory.getLogger(FuncionarioServiceImpl.class);
-
-//	@Autowired
-//	private FuncionarioService funcionarioService;
 	
 	@Autowired
 	private FuncionarioRepository funcionarioRepository;
@@ -40,7 +37,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	
 	public Optional<Funcionario> buscarPorId(Long id) {
 		log.info("Buscando funcionário pelo ID {}", id);
-		return Optional.ofNullable(this.funcionarioRepository.getById(id));
+		return Optional.ofNullable(this.funcionarioRepository.findFuncionarioById(id));
 	}
 	
 }
