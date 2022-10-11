@@ -12,8 +12,6 @@ import java.time.LocalTime;
 
 @ToString
 @Entity
-@Getter
-@Setter
 @Table(name = "point_mirror")
 public class PointMirror implements Serializable {
 

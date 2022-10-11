@@ -3,7 +3,6 @@ package com.samorvell.pontointeligente.api.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,8 +15,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
@@ -27,8 +24,6 @@ import javax.persistence.Transient;
 
 import com.samorvell.pontointeligente.api.enums.PerfilEnum;
 
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 @ToString
@@ -202,7 +197,7 @@ public class Funcionario implements Serializable {
 		dataAtualizacao = atual;
 	}
 
-	/*@Override
+/*	@Override
 	public String toString() {
 		return "Funcionario{" +
 				"id=" + id +

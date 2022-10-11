@@ -18,7 +18,7 @@ CREATE TABLE `funcionario` (
   `qtd_horas_trabalho_dia` float DEFAULT NULL,
   `senha` varchar(255) NOT NULL,
   `valor_hora` decimal(19,2) DEFAULT NULL
-  -- `empresa_id` bigint(20) DEFAULT NULL
+  `empresa_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `lancamento` (
@@ -29,7 +29,7 @@ CREATE TABLE `lancamento` (
   `descricao` varchar(255) DEFAULT NULL,
   `localizacao` varchar(255) DEFAULT NULL,
   `tipo` varchar(255) NOT NULL
---  `funcionario_id` bigint(20) DEFAULT NULL
+  `funcionario_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

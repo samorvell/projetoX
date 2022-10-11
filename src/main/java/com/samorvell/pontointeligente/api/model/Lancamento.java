@@ -23,7 +23,6 @@ import com.samorvell.pontointeligente.api.enums.TipoEnum;
 
 import lombok.ToString;
 
-@ToString
 @Entity
 @Table(name = "lancamento")
 public class Lancamento implements Serializable {
@@ -127,5 +126,19 @@ public class Lancamento implements Serializable {
 		final LocalDateTime atual = LocalDateTime.now();
 		dataCriacao = atual;
 		dataAtualizacao = atual;
+	}
+
+	@Override
+	public String toString() {
+		return "Lancamento{" +
+				"id=" + id +
+				", data=" + data +
+				", descricao='" + descricao + '\'' +
+				", localizacao='" + localizacao + '\'' +
+				", dataCriacao=" + dataCriacao +
+				", dataAtualizacao=" + dataAtualizacao +
+				", tipo=" + tipo +
+				", funcionario=" + funcionario +
+				'}';
 	}
 }

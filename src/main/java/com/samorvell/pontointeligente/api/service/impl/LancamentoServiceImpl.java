@@ -32,7 +32,12 @@ public class LancamentoServiceImpl implements LancamentoService {
 		log.info("Buscando lançamentos para o funcionário ID {}", funcionarioId);
 		return this.lancamentoRepository.findByFuncionarioId(funcionarioId, pageRequest);
 	}
-	
+
+	public Optional<Lancamento> findReleaseByFuncionarioId(Long funcionarioId) {
+		log.info("Buscando lançamentos para o funcionário ID {}", funcionarioId);
+		return this.lancamentoRepository.findEntriesByFuncionarioId(funcionarioId);
+	}
+
 	@Cacheable("lancamentoPorId")//anotação para criação e configuração do cache, que esta no arquivo ehcach.xml
 	public Optional<Lancamento> buscarPorId(Long id) {
 		log.info("Buscando um lançamento pelo ID {}", id);
@@ -50,8 +55,4 @@ public class LancamentoServiceImpl implements LancamentoService {
 		this.lancamentoRepository.deleteById(id);
 	}
 
-	@Override
-	public Optional<Lancamento> buscarLancamentosPorFuncionarioId(Long funcionarioId) {
-		return this.lancamentoRepository.findEntriesByFuncionarioId(funcionarioId);
-	}
 }

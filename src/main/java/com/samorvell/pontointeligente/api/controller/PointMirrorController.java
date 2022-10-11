@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/lancamentos")
+@RequestMapping("/api/pointMirror")
 @CrossOrigin(origins = "*")
 public class PointMirrorController {
 
@@ -53,8 +54,8 @@ public class PointMirrorController {
             * @param
      * @return ResponseEntity<Response < LancamentoDto>>
      */
-    @PostMapping(value = "/sumEntries/{funcionarioId}")
-    public ResponseEntity<Response<Page<LancamentoDto>>> sumEntriesById(@PathVariable("funcionarioId") Long funcionarioId,
+    @PostMapping(value = "/generatepointmirrors/{funcionarioId}")
+    public ResponseEntity<Response<Page<LancamentoDto>>> genaratePointMirrorById(@PathVariable("funcionarioId") Long funcionarioId,
                                                                         @RequestParam(value = "data", required = false) LocalDate data,
                                                                         @RequestParam(value = "pag", defaultValue = "0") int pag,
                                                                         @RequestParam(value = "ord", defaultValue = "id") String ord,
@@ -62,13 +63,13 @@ public class PointMirrorController {
                                                                         @RequestHeader(value = "companyId", required = true) Long companyId) {
         log.info("Buscando lançamentos para validação do espelho de ponto por ID do funcionário: {}, página: {}", funcionarioId, pag);
         Response<Page<LancamentoDto>> response = new Response<Page<LancamentoDto>>();
-        // PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina, Sort.Direction.valueOf(dir), ord);
+        PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina, Sort.Direction.valueOf(dir), ord);
 
-        Optional<Lancamento> launch = this.lancamentoService.buscarLancamentosPorFuncionarioId(funcionarioId);
+        Page<Lancamento> release = this.lancamentoService.buscarPorFuncionarioId(funcionarioId, pageRequest);
         Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(funcionarioId);
         var compId = funcionario.get().getEmpresa().getId();
 
-        if (launch.isEmpty()) {
+        if (release.isEmpty()) {
             log.info("Lançamento não encontrado para o ID: {}", funcionarioId);
             response.getErrors().add("Lançamento não encontrado para o id " + funcionarioId);
             return ResponseEntity.badRequest().body(response);
@@ -76,12 +77,11 @@ public class PointMirrorController {
 
         if (companyId != compId) {
             log.info("Company id do funcionario é diferente do empresa id pesquisado: {}", companyId);
-            response.getErrors().add("Company id do funcionario é diferente do empresa id pesquisado: " + companyId);
+            response.getErrors().add("Company id do funcionario é diferente do empresa id:"+compId+" pesquisado: " + companyId);
             return ResponseEntity.badRequest().body(response);
         }
 
-        // this.pointMirrorService.saveMirrorPointById(launch, funcionarioId) ;
-        this.pointMirrorService.saveBMirrorPointById(launch, funcionarioId);
+        this.pointMirrorService.genaratePointMirrorById(release, funcionarioId);
 
         return ResponseEntity.ok(response);
     }
