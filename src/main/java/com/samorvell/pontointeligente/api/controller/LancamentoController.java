@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -73,25 +74,19 @@ public class LancamentoController {
 			@PathVariable("funcionarioId") Long funcionarioId, @RequestParam(value = "pag", defaultValue = "0") int pag,
 			@RequestParam(value = "ord", defaultValue = "id") String ord,
 			@RequestParam(value = "dir", defaultValue = "DESC") String dir,
- 
-	
-
 			@RequestHeader(value = "companyId") Long companyId) {
-
 
 		log.info("Buscando lançamentos por ID do funcionário: {}, página: {}", funcionarioId, pag);
 		Response<Page<LancamentoDto>> response = new Response<Page<LancamentoDto>>();
 		PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
-		
+
 		Page<Lancamento> lancamentos = this.lancamentoService.buscarPorFuncionarioId(funcionarioId, pageRequest);
 		Page<LancamentoDto> lancamentosDto = lancamentos.map(lancamento -> this.converterLancamentoDto(lancamento));
 		Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(funcionarioId);
 
-		var copmpId = funcionario.get().getEmpresa().getId();
-		// System.out.println("paramentro empresa Id: " + companyId);
-		// System.out.println("buscando empresa Id, pelo funcionario; " + empId);
+		var compId = funcionario.get().getEmpresa().getId();
 
-		if (lancamentos.isEmpty() || companyId != copmpId) {
+		if (lancamentos.isEmpty() || companyId != compId) {
 			log.info("Lançamento não encontrado para o ID: {}", funcionarioId);
 			response.getErrors().add("Lançamento não encontrado para o id " + funcionarioId);
 			return ResponseEntity.badRequest().body(response);

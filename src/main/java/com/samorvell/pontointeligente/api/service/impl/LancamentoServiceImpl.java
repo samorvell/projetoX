@@ -52,6 +52,7 @@ public class LancamentoServiceImpl implements LancamentoService {
 
 	@Override
 	public Optional<Lancamento> buscarLancamentosPorFuncionarioId(Long funcionarioId) {
+		log.info("Buscando lancamento para o espelho de ponto por Id {}", funcionarioId);
 		return this.lancamentoRepository.findEntriesByFuncionarioId(funcionarioId);
 	}
 }

@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -63,10 +64,14 @@ public class CadastroPJController {
 			return ResponseEntity.badRequest().body(response);
 		}
 
-		Empresa empresa = this.converterDtoParaEmpresa(cadastroPJDto);
+		Empresa empresa = new Empresa();
+		BeanUtils.copyProperties(cadastroPJDto, empresa);
+		//Empresa empresa = this.converterDtoParaEmpresa(cadastroPJDto);
 
 		this.empresaService.persistir(empresa);
-		Funcionario funcionario = this.converterDtoParaFuncionario(cadastroPJDto, result);
+		Funcionario funcionario = new Funcionario();
+		BeanUtils.copyProperties(cadastroPJDto, funcionario);
+		//Funcionario funcionario = this.converterDtoParaFuncionario(cadastroPJDto, result);
 		funcionario.setEmpresa(empresa);
 		var teste = funcionario.getEmpresa().getId();
 		System.out.println(teste);
@@ -93,19 +98,6 @@ public class CadastroPJController {
 				.ifPresent(func -> result.addError(new ObjectError("funcionario", "Email já existente.")));
 	}
 
-	/**
-	 * Converte os dados do DTO para empresa.
-	 * 
-	 * @param cadastroPJDto
-	 * @return Empresa
-	 */
-	private Empresa converterDtoParaEmpresa(CadastroPJDto cadastroPJDto) {
-		Empresa empresa = new Empresa();
-		empresa.setCnpj(cadastroPJDto.getCnpj());
-		empresa.setRazaoSocial(cadastroPJDto.getRazaoSocial());
-
-		return empresa;
-	}
 
 	/**
 	 * Converte os dados do DTO para funcionário.
@@ -115,7 +107,7 @@ public class CadastroPJController {
 	 * @return Funcionario
 	 * @throws NoSuchAlgorithmException
 	 */
-	private Funcionario converterDtoParaFuncionario(CadastroPJDto cadastroPJDto, BindingResult result)
+	/*private Funcionario converterDtoParaFuncionario(CadastroPJDto cadastroPJDto, BindingResult result)
 			throws NoSuchAlgorithmException {
 		Funcionario funcionario = new Funcionario();
 		funcionario.setNome(cadastroPJDto.getNome());
@@ -126,7 +118,7 @@ public class CadastroPJController {
 
 
 		return funcionario;
-	}
+	}*/
 
 	/**
 	 * Popula o DTO de cadastro com os dados do funcionário e empresa.

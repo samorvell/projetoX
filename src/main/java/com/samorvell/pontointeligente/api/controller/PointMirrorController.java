@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,13 +63,13 @@ public class PointMirrorController {
                                                                         @RequestHeader(value = "companyId", required = true) Long companyId) {
         log.info("Buscando lançamentos para validação do espelho de ponto por ID do funcionário: {}, página: {}", funcionarioId, pag);
         Response<Page<LancamentoDto>> response = new Response<Page<LancamentoDto>>();
-        // PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina, Sort.Direction.valueOf(dir), ord);
+        PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina, Sort.Direction.valueOf(dir), ord);
 
-        Optional<Lancamento> launch = this.lancamentoService.buscarLancamentosPorFuncionarioId(funcionarioId);
+        Page<Lancamento> lancamentos = this.lancamentoService.buscarPorFuncionarioId(funcionarioId, pageRequest);
         Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(funcionarioId);
         var compId = funcionario.get().getEmpresa().getId();
 
-        if (launch.isEmpty()) {
+        if (lancamentos.isEmpty()) {
             log.info("Lançamento não encontrado para o ID: {}", funcionarioId);
             response.getErrors().add("Lançamento não encontrado para o id " + funcionarioId);
             return ResponseEntity.badRequest().body(response);
@@ -80,8 +81,8 @@ public class PointMirrorController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        // this.pointMirrorService.saveMirrorPointById(launch, funcionarioId) ;
-        this.pointMirrorService.saveBMirrorPointById(launch, funcionarioId);
+        // this.pointMirrorService.saveMirrorPointById(lancamentos, funcionarioId) ;
+        this.pointMirrorService.saveBMirrorPointById(lancamentos, funcionarioId);
 
         return ResponseEntity.ok(response);
     }

@@ -337,11 +337,7 @@
 			<artifactId>spring-core</artifactId>
 			<version>5.3.10</version>
 		</dependency>
-		<dependency>
-			<groupId>org.yaml</groupId>
-			<artifactId>snakeyaml</artifactId>
-			<version>1.28</version>
-		</dependency>
+
 		<dependency>
 			<groupId>org.opentest4j</groupId>
 			<artifactId>opentest4j</artifactId>

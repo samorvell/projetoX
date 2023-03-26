@@ -1,31 +1,23 @@
 package com.samorvell.pontointeligente.api.controller;
 
-import java.math.BigDecimal;
-import java.security.NoSuchAlgorithmException;
-import java.util.Optional;
-
-import javax.validation.Valid;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.samorvell.pontointeligente.api.dtos.CadastroPFDto;
-import com.samorvell.pontointeligente.api.enums.PerfilEnum;
 import com.samorvell.pontointeligente.api.model.Empresa;
 import com.samorvell.pontointeligente.api.model.Funcionario;
 import com.samorvell.pontointeligente.api.response.Response;
 import com.samorvell.pontointeligente.api.services.EmpresaService;
 import com.samorvell.pontointeligente.api.services.FuncionarioService;
-import com.samorvell.pontointeligente.api.utils.PasswordUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/cadastrar-pf")
@@ -56,9 +48,10 @@ public class CadastroPFController {
 			BindingResult result) throws NoSuchAlgorithmException {
 		log.info("Cadastrando PF: {}", cadastroPFDto.toString());
 		Response<CadastroPFDto> response = new Response<CadastroPFDto>();
-
+		Funcionario funcionario = new Funcionario();
 		validarDadosExistentes(cadastroPFDto, result);
-		Funcionario funcionario = this.converterDtoParaFuncionario(cadastroPFDto, result);
+		BeanUtils.copyProperties(cadastroPFDto, funcionario);
+		//Funcionario funcionario = this.converterDtoParaFuncionario(cadastroPFDto, result);
 
 		if (result.hasErrors()) {
 			log.error("Erro validando dados de cadastro PF: {}", result.getAllErrors());
@@ -101,7 +94,7 @@ public class CadastroPFController {
 	 * @return Funcionario
 	 * @throws NoSuchAlgorithmException
 	 */
-	private Funcionario converterDtoParaFuncionario(CadastroPFDto cadastroPFDto, BindingResult result)
+	/*private Funcionario converterDtoParaFuncionario(CadastroPFDto cadastroPFDto, BindingResult result)
 			throws NoSuchAlgorithmException {
 		Funcionario funcionario = new Funcionario();
 		funcionario.setNome(cadastroPFDto.getNome());
@@ -116,7 +109,7 @@ public class CadastroPFController {
 		cadastroPFDto.getValorHora().ifPresent(valorHora -> funcionario.setValorHora(new BigDecimal(valorHora)));
 
 		return funcionario;
-	}
+	}*/
 
 	/**
 	 * Popula o DTO de cadastro com os dados do funcionário e empresa.

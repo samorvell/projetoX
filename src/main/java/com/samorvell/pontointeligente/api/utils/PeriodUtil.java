@@ -2,11 +2,13 @@ package com.samorvell.pontointeligente.api.utils;
 
 
 import com.samorvell.pontointeligente.api.enums.TipoEnum;
+import com.samorvell.pontointeligente.api.model.Lancamento;
 import lombok.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.Collections;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,21 +23,31 @@ public class PeriodUtil {
     private LocalDateTime timeInitialWork;
     private LocalDateTime timeFinalWork;
     private LocalDateTime interval;
-    private LocalTime dayWork;
+    private LocalDateTime dayWork;
     private LocalDateTime hours;
 
+    public PeriodUtil(String key) {
+    }
 
 
-    public LocalTime getHourDayWork() {
+    public List<LocalDateTime> getHourDayWork() {
 
+        timeInitialWork = lancamentos.stream().filter(initWork -> initWork.getTipo().equals(TipoEnum.INICIO_TRABALHO))
+                .map(Lancamento::getData)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Não foi encontrado um lançamento de início de trabalho"));
 
-        var testDuration = Duration.between(timeFinalLunch, timeInitialLunch);
-        System.out.println("Duration: " + testDuration);
+        timeFinalWork = lancamentos.stream().filter(initWork -> initWork.getTipo().equals(TipoEnum.TERMINO_TRABALHO))
+                .map(Lancamento::getData)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Não foi encontrado um lançamento de término de trabalho"));
+
+        var duration = Duration.between( timeFinalLunch,  timeInitialLunch);
         interval = timeFinalLunch.minusHours(timeInitialLunch.getHour());
         hours = timeFinalWork.minusHours(timeInitialWork.getHour());
-        dayWork = hours.minusHours(getInterval().getHour()).toLocalTime();
+        dayWork = hours.minusHours(getInterval().getHour());
 
-        return dayWork ;
+        return Collections.singletonList(hours.minusHours(getInterval().getHour()));
     }
 
     //Retrieve lunch schedule
@@ -45,5 +57,6 @@ public class PeriodUtil {
 
         return interval ;
     }
+
 
 }

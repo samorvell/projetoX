@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -22,9 +23,9 @@ public class PointMirror implements Serializable {
     @Column(name = "funcionario_id", nullable = false)
     private Long funcionarioId;
     @Column(name = "acumulado", nullable = false)
-    private LocalTime accumulated;
+    private LocalDateTime accumulated;
     @Column(name = "data", nullable = false)
-    private LocalDate data;
+    private LocalDateTime data;
     @Column(name = "data_criacao", nullable = false)
     private LocalDateTime creationDate;
     @Column
@@ -44,19 +45,19 @@ public class PointMirror implements Serializable {
         this.funcionarioId = funcionarioId;
     }
 
-    public LocalTime getAccumulated() {
+    public LocalDateTime getAccumulated() {
         return accumulated;
     }
 
-    public void setAccumulated(LocalTime accumulated) {
+    public void setAccumulated(LocalDateTime accumulated) {
         this.accumulated = accumulated;
     }
 
-    public LocalDate getData() {
+    public LocalDateTime getData() {
         return data;
     }
 
-    public void setData(LocalDate data) {
+    public void setData(LocalDateTime data) {
         this.data = data;
     }
 

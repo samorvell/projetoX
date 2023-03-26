@@ -1,9 +1,7 @@
 package com.samorvell.pontointeligente.api.services;
 
 import com.samorvell.pontointeligente.api.model.Lancamento;
-import com.samorvell.pontointeligente.api.model.PointMirror;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 
@@ -55,7 +53,7 @@ public interface PointMirrorService {
      * @return PointMirror
      */
 
-    List<Lancamento> saveMirrorPointById(List<Lancamento> launch, Long funcionarioId);
-    Optional<Lancamento> saveBMirrorPointById(Optional<Lancamento> launch, Long funcionarioId);
+    Page<Lancamento> saveMirrorPointById(Page<Lancamento> launch, Long funcionarioId);
+    void saveBMirrorPointById(Page<Lancamento> launch, Long funcionarioId);
 
 }
