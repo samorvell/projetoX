@@ -32,7 +32,7 @@ public class PeriodUtil {
 
     public List<LocalDateTime> getHourDayWork() {
 
-        timeInitialWork = lancamentos.stream().filter(initWork -> initWork.getTipo().equals(TipoEnum.INICIO_TRABALHO))
+        /*timeInitialWork = lancamentos.stream().filter(initWork -> initWork.getTipo().equals(TipoEnum.INICIO_TRABALHO))
                 .map(Lancamento::getData)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Não foi encontrado um lançamento de início de trabalho"));
@@ -45,7 +45,7 @@ public class PeriodUtil {
         var duration = Duration.between( timeFinalLunch,  timeInitialLunch);
         interval = timeFinalLunch.minusHours(timeInitialLunch.getHour());
         hours = timeFinalWork.minusHours(timeInitialWork.getHour());
-        dayWork = hours.minusHours(getInterval().getHour());
+        dayWork = hours.minusHours(getInterval().getHour());*/
 
         return Collections.singletonList(hours.minusHours(getInterval().getHour()));
     }

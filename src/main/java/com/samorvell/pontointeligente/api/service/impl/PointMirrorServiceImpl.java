@@ -115,33 +115,33 @@ public class PointMirrorServiceImpl implements PointMirrorService {
     public void saveBMirrorPointById(Page<Lancamento> lancamentos, Long funcionarioId) {
 
 
-        Map<String, PeriodUtil> periodMap = new HashMap<>();
-        PointMirror pointMirror = new PointMirror();
-
-        for (Lancamento element : lancamentos) {
-            var type = element.getTipo().toString();
-            if (type.contains("INICIO") || type.contains("TERMINO")) {
-                var key = type.contains("ALMOCO") ? "ALMOCO" : type.contains("TRABALHO") ? "TRABALHO" : "";
-                var periodo = periodMap.getOrDefault(key, new PeriodUtil(key));
-                if (key.equals("TRABALHO")) {
-                    periodo.setTimeFinalWork(element.getData());
-                    var accumulated = periodo.getHourDayWork();
-                    pointMirror.setNome(element.getFuncionario().getNome());
-                    pointMirror.setData(LocalDateTime.from(element.getData().toInstant(ZoneOffset.UTC).atZone(ZoneId.systemDefault()).toLocalDate()));
-                    //pointMirror.setDataHora(element.getData().toInstant(ZoneOffset.UTC).atZone(ZoneId.systemDefault()).toLocalDateTime());
-                    //pointMirror.setCriationDate(element.getDataCriacao().toInstant(ZoneOffset.UTC).atZone(ZoneId.systemDefault()).toLocalDateTime());
-                    pointMirror.setAccumulated(accumulated);
-                    pointMirror.setFuncionarioId(funcionarioId);
-                    periodMap.clear();
-                } else {
-                    periodo.setTimeFinalLunch(element);
-                    var timeBreak = periodo.getHourIntervalLunch();
-                }
-                periodMap.put(key, periodo);
-            }
-        }
-        //return lancamentos;
-
+//        Map<String, PeriodUtil> periodMap = new HashMap<>();
+//        PointMirror pointMirror = new PointMirror();
+//
+//        for (Lancamento element : lancamentos) {
+//            var type = element.getTipo().toString();
+//            if (type.contains("INICIO") || type.contains("TERMINO")) {
+//                var key = type.contains("ALMOCO") ? "ALMOCO" : type.contains("TRABALHO") ? "TRABALHO" : "";
+//                var periodo = periodMap.getOrDefault(key, new PeriodUtil(key));
+//                if (key.equals("TRABALHO")) {
+//                    periodo.setTimeFinalWork(element.getData());
+//                    var accumulated = periodo.getHourDayWork();
+//                    pointMirror.setNome(element.getFuncionario().getNome());
+//                    pointMirror.setData(LocalDateTime.from(element.getData().toInstant(ZoneOffset.UTC).atZone(ZoneId.systemDefault()).toLocalDate()));
+//                    //pointMirror.setDataHora(element.getData().toInstant(ZoneOffset.UTC).atZone(ZoneId.systemDefault()).toLocalDateTime());
+//                    //pointMirror.setCriationDate(element.getDataCriacao().toInstant(ZoneOffset.UTC).atZone(ZoneId.systemDefault()).toLocalDateTime());
+//                    pointMirror.setAccumulated(accumulated);
+//                    pointMirror.setFuncionarioId(funcionarioId);
+//                    periodMap.clear();
+//                } else {
+//                    periodo.setTimeFinalLunch(element);
+//                    var timeBreak = periodo.getHourIntervalLunch();
+//                }
+//                periodMap.put(key, periodo);
+//            }
+//        }
+//        //return lancamentos;
+//
 
     }
 
